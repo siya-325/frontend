@@ -11,7 +11,7 @@ interface SearchBarProps {
 const SearchBar = ({ query, onChange, onSubmit, onOpenFilter, isFixed = false }: SearchBarProps) => {
   if (isFixed) {
     return (
-      <div className="fixed bottom-5 left-1/2 -translate-x-1/2 w-full max-w-3xl px-4 z-50 animate-fade-in">
+      <div className="absolute bottom-5 left-1/2 -translate-x-1/2 w-full max-w-3xl px-4 z-50 animate-fade-in">
           <div className="flex items-center bg-card border border-border rounded-2xl px-4 py-3 gap-2 focus-within:border-primary/50 transition-colors shadow-xl">
             <input
               type="text"
