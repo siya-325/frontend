@@ -7,8 +7,13 @@ import AuthPage from "@/components/AuthPage";
 import HelpPage from "@/components/HelpPage";
 import SettingsPage from "@/components/SettingsPage";
 import AboutPage from "@/components/AboutPage";
+import { useIsDesktop } from "@/hooks/use-is-desktop";
+
+const SIDEBAR_EXPANDED = 260;
+const SIDEBAR_COLLAPSED = 64;
 
 const Index = () => {
+  const isDesktop = useIsDesktop();
   const [isSignedIn, setIsSignedIn] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [filterOpen, setFilterOpen] = useState(false);
@@ -17,6 +22,15 @@ const Index = () => {
   const [hasSearched, setHasSearched] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [showAuth, setShowAuth] = useState(false);
+
+  // Close mobile sidebar when switching to desktop
+  useEffect(() => {
+    if (!isDesktop) {
+      setSidebarOpen(false);
+    } else {
+      setSidebarOpen(true);
+    }
+  }, [isDesktop]);
 
   // ⌘K shortcut
   useEffect(() => {
@@ -74,6 +88,11 @@ const Index = () => {
   if (showAuth && !isSignedIn) {
     return <AuthPage onSignIn={handleSignIn} />;
   }
+
+  // Calculate main content margin (desktop only — mobile has no margin)
+  const mainMarginLeft = isDesktop
+    ? sidebarOpen ? SIDEBAR_EXPANDED : SIDEBAR_COLLAPSED
+    : 0;
 
   const renderContent = () => {
     switch (currentPage) {
@@ -140,8 +159,8 @@ const Index = () => {
       />
 
       <main
-        className="transition-all duration-300"
-        style={{ marginLeft: sidebarOpen ? 260 : 0 }}
+        className="transition-all duration-300 ease-in-out"
+        style={{ marginLeft: mainMarginLeft }}
       >
         {renderContent()}
       </main>

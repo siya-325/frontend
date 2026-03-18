@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { X, ChevronDown, ChevronRight } from "lucide-react";
+import { useIsDesktop } from "@/hooks/use-is-desktop";
 
 interface FilterPanelProps {
   isOpen: boolean;
@@ -7,6 +8,7 @@ interface FilterPanelProps {
 }
 
 const FilterPanel = ({ isOpen, onClose }: FilterPanelProps) => {
+  const isDesktop = useIsDesktop();
   const [yearFilter, setYearFilter] = useState("any");
   const [minYear, setMinYear] = useState("");
   const [maxYear, setMaxYear] = useState("");
@@ -21,103 +23,124 @@ const FilterPanel = ({ isOpen, onClose }: FilterPanelProps) => {
 
   if (!isOpen) return null;
 
-  return (
+  const filterContent = (
     <>
-      {/* Overlay */}
-      <div className="fixed inset-0 bg-background/70 z-40 animate-fade-in-fast" onClick={onClose} />
+      <div className="flex items-center justify-between p-4 border-b border-border">
+        <h2 className="text-sm font-semibold text-foreground">Filters</h2>
+        <button onClick={onClose} className="p-1.5 rounded-md hover:bg-accent transition-colors">
+          <X className="w-4 h-4 text-muted-foreground" />
+        </button>
+      </div>
 
-      {/* Panel */}
-      <div className="fixed top-0 right-0 h-full w-80 bg-card border-l border-border z-50 animate-slide-in-right overflow-y-auto scrollbar-thin">
-        <div className="flex items-center justify-between p-4 border-b border-border">
-          <h2 className="text-sm font-semibold text-foreground">Filters</h2>
-          <button onClick={onClose} className="p-1.5 rounded-md hover:bg-accent transition-colors">
-            <X className="w-4 h-4 text-muted-foreground" />
-          </button>
-        </div>
-
-        <div className="p-4 space-y-6">
-          {/* Publish Year */}
-          <Section title="Publish year">
-            <div className="flex flex-wrap gap-2">
-              {["any", "2yr", "5yr", "10yr"].map((v) => (
-                <button
-                  key={v}
-                  onClick={() => setYearFilter(v)}
-                  className={`px-3 py-1.5 text-xs rounded-full border transition-colors ${
-                    yearFilter === v
-                      ? "bg-primary text-primary-foreground border-primary"
-                      : "border-border text-muted-foreground hover:text-foreground hover:border-foreground/30"
-                  }`}
-                >
-                  {v === "any" ? "Any" : v === "2yr" ? "Past 2 yrs" : v === "5yr" ? "Past 5 yrs" : "Past 10 yrs"}
-                </button>
-              ))}
-            </div>
-            <div className="flex items-center gap-2 mt-3">
-              <input
-                type="text"
-                placeholder="Min year"
-                value={minYear}
-                onChange={(e) => setMinYear(e.target.value)}
-                className="flex-1 bg-muted border border-border rounded-md px-2.5 py-1.5 text-xs text-foreground placeholder:text-muted-foreground outline-none focus:border-primary/50"
-              />
-              <span className="text-muted-foreground text-xs">–</span>
-              <input
-                type="text"
-                placeholder="Max year"
-                value={maxYear}
-                onChange={(e) => setMaxYear(e.target.value)}
-                className="flex-1 bg-muted border border-border rounded-md px-2.5 py-1.5 text-xs text-foreground placeholder:text-muted-foreground outline-none focus:border-primary/50"
-              />
-            </div>
-          </Section>
-
-          {/* Journal Rank */}
-          <Section title="Journal rank">
-            <select
-              value={journalRank}
-              onChange={(e) => setJournalRank(e.target.value)}
-              className="w-full bg-muted border border-border rounded-md px-2.5 py-1.5 text-xs text-foreground outline-none focus:border-primary/50"
-            >
-              <option value="any">Any</option>
-              <option value="q1">Q1</option>
-              <option value="q2">Q2</option>
-              <option value="q3">Q3</option>
-              <option value="q4">Q4</option>
-            </select>
-          </Section>
-
-          {/* Citations */}
-          <Section title="Citations">
+      <div className="p-4 space-y-6 overflow-y-auto scrollbar-thin flex-1">
+        {/* Publish Year */}
+        <Section title="Publish year">
+          <div className="flex flex-wrap gap-2">
+            {["any", "2yr", "5yr", "10yr"].map((v) => (
+              <button
+                key={v}
+                onClick={() => setYearFilter(v)}
+                className={`px-3 py-1.5 text-xs rounded-full border transition-colors ${
+                  yearFilter === v
+                    ? "bg-primary text-primary-foreground border-primary"
+                    : "border-border text-muted-foreground hover:text-foreground hover:border-foreground/30"
+                }`}
+              >
+                {v === "any" ? "Any" : v === "2yr" ? "Past 2 yrs" : v === "5yr" ? "Past 5 yrs" : "Past 10 yrs"}
+              </button>
+            ))}
+          </div>
+          <div className="flex items-center gap-2 mt-3">
             <input
               type="text"
-              placeholder="At least..."
-              value={citations}
-              onChange={(e) => setCitations(e.target.value)}
-              className="w-full bg-muted border border-border rounded-md px-2.5 py-1.5 text-xs text-foreground placeholder:text-muted-foreground outline-none focus:border-primary/50"
+              placeholder="Min year"
+              value={minYear}
+              onChange={(e) => setMinYear(e.target.value)}
+              className="flex-1 bg-muted border border-border rounded-md px-2.5 py-1.5 text-xs text-foreground placeholder:text-muted-foreground outline-none focus:border-primary/50"
             />
-          </Section>
+            <span className="text-muted-foreground text-xs">–</span>
+            <input
+              type="text"
+              placeholder="Max year"
+              value={maxYear}
+              onChange={(e) => setMaxYear(e.target.value)}
+              className="flex-1 bg-muted border border-border rounded-md px-2.5 py-1.5 text-xs text-foreground placeholder:text-muted-foreground outline-none focus:border-primary/50"
+            />
+          </div>
+        </Section>
 
-          {/* Toggles */}
-          <Section title="General">
-            <Toggle label="Exclude Preprints" checked={excludePreprints} onChange={setExcludePreprints} />
-            <Toggle label="Ask Paper" checked={askPaper} onChange={setAskPaper} badge="Beta" />
-            <Toggle label="Open access" checked={openAccess} onChange={setOpenAccess} />
-          </Section>
+        {/* Journal Rank */}
+        <Section title="Journal rank">
+          <select
+            value={journalRank}
+            onChange={(e) => setJournalRank(e.target.value)}
+            className="w-full bg-muted border border-border rounded-md px-2.5 py-1.5 text-xs text-foreground outline-none focus:border-primary/50"
+          >
+            <option value="any">Any</option>
+            <option value="q1">Q1</option>
+            <option value="q2">Q2</option>
+            <option value="q3">Q3</option>
+            <option value="q4">Q4</option>
+          </select>
+        </Section>
 
-          {/* Collapsible sections */}
-          <CollapsibleSection title="Methodology" open={methodologyOpen} onToggle={() => setMethodologyOpen(!methodologyOpen)}>
-            <p className="text-xs text-muted-foreground">Select methodology filters...</p>
-          </CollapsibleSection>
+        {/* Citations */}
+        <Section title="Citations">
+          <input
+            type="text"
+            placeholder="At least..."
+            value={citations}
+            onChange={(e) => setCitations(e.target.value)}
+            className="w-full bg-muted border border-border rounded-md px-2.5 py-1.5 text-xs text-foreground placeholder:text-muted-foreground outline-none focus:border-primary/50"
+          />
+        </Section>
 
-          <CollapsibleSection title="Fields of study" open={fieldsOpen} onToggle={() => setFieldsOpen(!fieldsOpen)}>
-            <p className="text-xs text-muted-foreground">Select fields of study...</p>
-          </CollapsibleSection>
+        {/* Toggles */}
+        <Section title="General">
+          <Toggle label="Exclude Preprints" checked={excludePreprints} onChange={setExcludePreprints} />
+          <Toggle label="Ask Paper" checked={askPaper} onChange={setAskPaper} badge="Beta" />
+          <Toggle label="Open access" checked={openAccess} onChange={setOpenAccess} />
+        </Section>
 
-          <CollapsibleSection title="Countries" open={countriesOpen} onToggle={() => setCountriesOpen(!countriesOpen)}>
-            <p className="text-xs text-muted-foreground">Select countries...</p>
-          </CollapsibleSection>
+        {/* Collapsible sections */}
+        <CollapsibleSection title="Methodology" open={methodologyOpen} onToggle={() => setMethodologyOpen(!methodologyOpen)}>
+          <p className="text-xs text-muted-foreground">Select methodology filters...</p>
+        </CollapsibleSection>
+
+        <CollapsibleSection title="Fields of study" open={fieldsOpen} onToggle={() => setFieldsOpen(!fieldsOpen)}>
+          <p className="text-xs text-muted-foreground">Select fields of study...</p>
+        </CollapsibleSection>
+
+        <CollapsibleSection title="Countries" open={countriesOpen} onToggle={() => setCountriesOpen(!countriesOpen)}>
+          <p className="text-xs text-muted-foreground">Select countries...</p>
+        </CollapsibleSection>
+      </div>
+    </>
+  );
+
+  // MOBILE/TABLET: centered modal
+  if (!isDesktop) {
+    return (
+      <>
+        <div className="fixed inset-0 bg-background/70 z-40 animate-fade-in-fast" onClick={onClose} />
+        <div className="fixed inset-0 z-50 flex items-start justify-center pt-6 pb-6 px-4">
+          <div
+            className="bg-card border border-border rounded-2xl shadow-2xl w-full max-w-md max-h-[calc(100vh-48px)] flex flex-col animate-scale-in"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {filterContent}
+          </div>
         </div>
+      </>
+    );
+  }
+
+  // DESKTOP: right-side sliding panel
+  return (
+    <>
+      <div className="fixed inset-0 bg-background/70 z-40 animate-fade-in-fast" onClick={onClose} />
+      <div className="fixed top-0 right-0 h-full w-80 bg-card border-l border-border z-50 animate-slide-in-right overflow-y-auto scrollbar-thin flex flex-col">
+        {filterContent}
       </div>
     </>
   );
