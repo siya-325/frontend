@@ -35,22 +35,20 @@ const AppSidebar = ({
   // DESKTOP: collapsible sidebar (never fully hidden)
   if (isDesktop) {
     return (
-      <aside
-        className="fixed top-0 left-0 h-full z-30 flex flex-col bg-sidebar border-r border-sidebar-border transition-all duration-300 ease-in-out overflow-hidden"
-        style={{ width: isOpen ? SIDEBAR_EXPANDED : SIDEBAR_COLLAPSED }}
-      >
-        {/* Header */}
-        <div className="flex items-center justify-between p-3 h-14 shrink-0">
-          <div className="flex items-center gap-2 min-w-0">
-            <div className="w-7 h-7 rounded-lg bg-primary flex items-center justify-center shrink-0">
-              <span className="text-primary-foreground text-xs font-bold">R</span>
+      <div className="relative" style={{ width: isOpen ? SIDEBAR_EXPANDED : SIDEBAR_COLLAPSED }}>
+        <aside
+          className="fixed top-0 left-0 h-full z-30 flex flex-col bg-sidebar border-r border-sidebar-border transition-all duration-300 ease-in-out overflow-hidden"
+          style={{ width: isOpen ? SIDEBAR_EXPANDED : SIDEBAR_COLLAPSED }}
+        >
+          {/* Header */}
+          <div className="flex items-center justify-between p-3 h-14 shrink-0">
+            <div className="flex items-center gap-2 min-w-0">
+              <div className="w-7 h-7 rounded-lg bg-primary flex items-center justify-center shrink-0">
+                <span className="text-primary-foreground text-xs font-bold">R</span>
+              </div>
+              {isOpen && <span className="text-sm font-semibold text-foreground whitespace-nowrap">Research</span>}
             </div>
-            {isOpen && <span className="text-sm font-semibold text-foreground whitespace-nowrap">Research</span>}
           </div>
-          <button onClick={onToggle} className="p-1.5 rounded-md hover:bg-accent transition-colors shrink-0">
-            {isOpen ? <PanelLeftClose className="w-4 h-4 text-muted-foreground" /> : <PanelLeft className="w-4 h-4 text-muted-foreground" />}
-          </button>
-        </div>
 
         {/* New Thread */}
         <div className="px-3 mb-1 shrink-0">
@@ -134,7 +132,18 @@ const AppSidebar = ({
             </button>
           )}
         </div>
-      </aside>
+        </aside>
+
+        {/* Floating toggle button outside sidebar edge */}
+        <button
+          onClick={onToggle}
+          className="fixed top-4 z-40 w-7 h-7 rounded-full bg-sidebar border border-sidebar-border shadow-md hover:bg-accent flex items-center justify-center transition-all duration-300 ease-in-out"
+          style={{ left: (isOpen ? SIDEBAR_EXPANDED : SIDEBAR_COLLAPSED) + 6 }}
+          title={isOpen ? "Collapse sidebar" : "Expand sidebar"}
+        >
+          {isOpen ? <PanelLeftClose className="w-3.5 h-3.5 text-muted-foreground" /> : <PanelLeft className="w-3.5 h-3.5 text-muted-foreground" />}
+        </button>
+      </div>
     );
   }
 
