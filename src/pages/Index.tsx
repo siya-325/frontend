@@ -175,7 +175,7 @@ const Index = () => {
         return (
           <div className="flex flex-col h-[calc(100vh)] relative">
             {/* Chat area or landing */}
-            <div className={`flex-1 overflow-y-auto ${hasSearched ? 'pb-24' : ''}`}>
+            <div className={`flex-1 overflow-y-auto ${hasSearched ? 'pb-32' : ''}`}>
               {!hasSearched ? (
                 <div className="flex flex-col items-center justify-center min-h-[calc(100vh-4rem)] px-4">
                   <div className="text-center mb-8 animate-fade-in">
