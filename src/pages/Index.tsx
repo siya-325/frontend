@@ -126,6 +126,19 @@ const Index = () => {
     setCurrentPage("home");
   };
 
+  const handleDeleteMessage = (index: number) => {
+    setMessages((prev) => {
+      const copy = [...prev];
+      // Remove the AI message and its preceding user message
+      if (index > 0 && copy[index - 1]?.type === "user") {
+        copy.splice(index - 1, 2);
+      } else {
+        copy.splice(index, 1);
+      }
+      return copy;
+    });
+  };
+
   const handleSelectHistory = (q: string) => {
     setQuery(q);
     setCurrentPage("home");
