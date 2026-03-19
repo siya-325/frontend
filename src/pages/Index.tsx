@@ -195,7 +195,7 @@ const Index = () => {
               />
             )}
             {/* Chat area or landing */}
-            <div className={`flex-1 overflow-y-auto ${hasSearched ? 'pb-32' : ''}`}>
+            <div className={`flex-1 overflow-y-auto ${hasSearched ? 'pb-36' : ''}`}>
               {!hasSearched ? (
                 <div className="flex flex-col items-center justify-center min-h-[calc(100vh-4rem)] px-4">
                   <div className="text-center mb-8 animate-fade-in">
