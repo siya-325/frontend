@@ -1,13 +1,14 @@
-import { useEffect, useRef } from "react";
-import ResultCard from "./ResultCard";
+import { useCallback, useEffect, useRef } from "react";
+import LiteratureReport from "./LiteratureReport";
 import type { ChatMessage } from "@/pages/Index";
 
 interface ChatMessagesProps {
   messages: ChatMessage[];
   isLoading: boolean;
+  onDeleteMessage: (index: number) => void;
 }
 
-const ChatMessages = ({ messages, isLoading }: ChatMessagesProps) => {
+const ChatMessages = ({ messages, isLoading, onDeleteMessage }: ChatMessagesProps) => {
   const bottomRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -27,10 +28,14 @@ const ChatMessages = ({ messages, isLoading }: ChatMessagesProps) => {
           ) : (
             <div className="flex justify-start">
               <div className="max-w-full w-full space-y-2">
-                <p className="text-sm text-muted-foreground mb-3">{msg.content}</p>
-                {msg.results?.map((result, j) => (
-                  <ResultCard key={j} {...result} />
-                ))}
+                <LiteratureReport
+                  content={msg.content}
+                  papers={msg.results || []}
+                  onDelete={() => {
+                    // Delete this AI message and the preceding user message
+                    onDeleteMessage(i);
+                  }}
+                />
               </div>
             </div>
           )}
@@ -39,15 +44,12 @@ const ChatMessages = ({ messages, isLoading }: ChatMessagesProps) => {
 
       {isLoading && (
         <div className="flex justify-start animate-fade-in">
-          <div className="space-y-3 w-full">
-            {[1, 2].map((i) => (
-              <div key={i} className="bg-card border border-border rounded-xl p-5 animate-pulse">
-                <div className="h-4 bg-muted rounded w-3/4 mb-3" />
-                <div className="h-3 bg-muted rounded w-1/3 mb-3" />
-                <div className="h-3 bg-muted rounded w-full" />
-                <div className="h-3 bg-muted rounded w-5/6 mt-1" />
-              </div>
-            ))}
+          <div className="w-full bg-card border border-border rounded-xl p-6 animate-pulse space-y-3">
+            <div className="h-3 bg-muted rounded w-1/4" />
+            <div className="h-3 bg-muted rounded w-full" />
+            <div className="h-3 bg-muted rounded w-5/6" />
+            <div className="h-3 bg-muted rounded w-full" />
+            <div className="h-3 bg-muted rounded w-3/4" />
           </div>
         </div>
       )}

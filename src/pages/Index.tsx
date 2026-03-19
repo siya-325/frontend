@@ -3,6 +3,7 @@ import AppSidebar from "@/components/AppSidebar";
 import SearchBar from "@/components/SearchBar";
 import FilterPanel from "@/components/FilterPanel";
 import ChatMessages from "@/components/ChatMessages";
+import ThreadHeader from "@/components/ThreadHeader";
 import AuthPage from "@/components/AuthPage";
 import HelpPage from "@/components/HelpPage";
 import SettingsPage from "@/components/SettingsPage";
@@ -125,6 +126,19 @@ const Index = () => {
     setCurrentPage("home");
   };
 
+  const handleDeleteMessage = (index: number) => {
+    setMessages((prev) => {
+      const copy = [...prev];
+      // Remove the AI message and its preceding user message
+      if (index > 0 && copy[index - 1]?.type === "user") {
+        copy.splice(index - 1, 2);
+      } else {
+        copy.splice(index, 1);
+      }
+      return copy;
+    });
+  };
+
   const handleSelectHistory = (q: string) => {
     setQuery(q);
     setCurrentPage("home");
@@ -174,6 +188,12 @@ const Index = () => {
       default:
         return (
           <div className="flex flex-col h-[calc(100vh)] relative">
+            {/* Thread header */}
+            {hasSearched && (
+              <ThreadHeader
+                title={messages.find((m) => m.type === "user")?.content || "Research Thread"}
+              />
+            )}
             {/* Chat area or landing */}
             <div className={`flex-1 overflow-y-auto ${hasSearched ? 'pb-32' : ''}`}>
               {!hasSearched ? (
@@ -215,7 +235,7 @@ const Index = () => {
                   )}
                 </div>
               ) : (
-                <ChatMessages messages={messages} isLoading={isLoading} />
+                <ChatMessages messages={messages} isLoading={isLoading} onDeleteMessage={handleDeleteMessage} />
               )}
             </div>
 
