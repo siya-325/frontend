@@ -14,7 +14,6 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-  DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
 import {
   AlertDialog,
@@ -33,6 +32,7 @@ interface ReportActionBarProps {
   showReferences: boolean;
   summaryText: string;
   onDelete: () => void;
+  onOpenFilter: () => void;
 }
 
 const ReportActionBar = ({
@@ -40,6 +40,7 @@ const ReportActionBar = ({
   showReferences,
   summaryText,
   onDelete,
+  onOpenFilter,
 }: ReportActionBarProps) => {
   const [deleteOpen, setDeleteOpen] = useState(false);
 
@@ -67,7 +68,10 @@ const ReportActionBar = ({
             References
           </button>
 
-          <button className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs text-muted-foreground hover:text-foreground hover:bg-accent transition-colors">
+          <button
+            onClick={onOpenFilter}
+            className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs text-muted-foreground hover:text-foreground hover:bg-accent transition-colors"
+          >
             <SlidersHorizontal className="w-3.5 h-3.5" />
             Filter
           </button>

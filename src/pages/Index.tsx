@@ -235,7 +235,7 @@ const Index = () => {
                   )}
                 </div>
               ) : (
-                <ChatMessages messages={messages} isLoading={isLoading} onDeleteMessage={handleDeleteMessage} />
+                <ChatMessages messages={messages} isLoading={isLoading} onDeleteMessage={handleDeleteMessage} onOpenFilter={() => setFilterOpen(true)} />
               )}
             </div>
 

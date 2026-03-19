@@ -1,5 +1,6 @@
 import { useState } from "react";
 import ReportActionBar from "./ReportActionBar";
+import ReferencesPanel from "./ReferencesPanel";
 
 interface Paper {
   title: string;
@@ -12,10 +13,11 @@ interface LiteratureReportProps {
   content: string;
   papers: Paper[];
   onDelete: () => void;
+  onOpenFilter: () => void;
 }
 
-const LiteratureReport = ({ content, papers, onDelete }: LiteratureReportProps) => {
-  const [showReferences, setShowReferences] = useState(false);
+const LiteratureReport = ({ content, papers, onDelete, onOpenFilter }: LiteratureReportProps) => {
+  const [referencesOpen, setReferencesOpen] = useState(false);
 
   const generateSummary = () => {
     if (!papers.length) return content;
@@ -45,44 +47,32 @@ const LiteratureReport = ({ content, papers, onDelete }: LiteratureReportProps) 
 
   return (
     <div className="w-full animate-fade-in">
-      {/* Report body */}
-      <div className="bg-card border border-border rounded-xl p-6 space-y-4">
-        <h3 className="text-sm font-semibold text-foreground tracking-tight">
-          Literature Review Summary
-        </h3>
-        <div className="space-y-3">
+      <div className="space-y-4">
+        <div className="space-y-4">
           {paragraphs.map((p, i) => (
             <p
               key={i}
-              className="text-sm text-muted-foreground leading-relaxed"
+              className="text-sm text-muted-foreground leading-[1.8]"
             >
               {p}
             </p>
           ))}
         </div>
 
-        {/* References section */}
-        {showReferences && (
-          <div className="pt-4 border-t border-border space-y-2 animate-fade-in">
-            <h4 className="text-xs font-semibold text-foreground uppercase tracking-wider">
-              References
-            </h4>
-            {papers.map((paper, i) => (
-              <p key={i} className="text-xs text-muted-foreground leading-relaxed">
-                [{i + 1}] {paper.authors} ({paper.year}). <em>{paper.title}</em>.
-              </p>
-            ))}
-          </div>
-        )}
-
-        {/* Action bar */}
         <ReportActionBar
-          onToggleReferences={() => setShowReferences((prev) => !prev)}
-          showReferences={showReferences}
+          onToggleReferences={() => setReferencesOpen((prev) => !prev)}
+          showReferences={referencesOpen}
           summaryText={summaryText}
           onDelete={onDelete}
+          onOpenFilter={onOpenFilter}
         />
       </div>
+
+      <ReferencesPanel
+        papers={papers}
+        isOpen={referencesOpen}
+        onClose={() => setReferencesOpen(false)}
+      />
     </div>
   );
 };
