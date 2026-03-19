@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import LiteratureReport from "./LiteratureReport";
 import type { ChatMessage } from "@/pages/Index";
 
@@ -6,9 +6,10 @@ interface ChatMessagesProps {
   messages: ChatMessage[];
   isLoading: boolean;
   onDeleteMessage: (index: number) => void;
+  onOpenFilter: () => void;
 }
 
-const ChatMessages = ({ messages, isLoading, onDeleteMessage }: ChatMessagesProps) => {
+const ChatMessages = ({ messages, isLoading, onDeleteMessage, onOpenFilter }: ChatMessagesProps) => {
   const bottomRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -16,25 +17,23 @@ const ChatMessages = ({ messages, isLoading, onDeleteMessage }: ChatMessagesProp
   }, [messages, isLoading]);
 
   return (
-    <div className="w-full max-w-2xl mx-auto px-4 pt-6 pb-4 space-y-4">
+    <div className="w-full max-w-[960px] mx-auto px-6 pt-6 pb-4 space-y-6">
       {messages.map((msg, i) => (
         <div key={i} className="animate-fade-in">
           {msg.type === "user" ? (
-            <div className="flex justify-end">
-              <div className="bg-primary text-primary-foreground rounded-2xl rounded-br-md px-4 py-2.5 max-w-[80%] text-sm">
+            <div className="flex justify-start">
+              <h3 className="text-base font-medium text-foreground">
                 {msg.content}
-              </div>
+              </h3>
             </div>
           ) : (
             <div className="flex justify-start">
-              <div className="max-w-full w-full space-y-2">
+              <div className="max-w-full w-full">
                 <LiteratureReport
                   content={msg.content}
                   papers={msg.results || []}
-                  onDelete={() => {
-                    // Delete this AI message and the preceding user message
-                    onDeleteMessage(i);
-                  }}
+                  onDelete={() => onDeleteMessage(i)}
+                  onOpenFilter={onOpenFilter}
                 />
               </div>
             </div>
@@ -43,14 +42,12 @@ const ChatMessages = ({ messages, isLoading, onDeleteMessage }: ChatMessagesProp
       ))}
 
       {isLoading && (
-        <div className="flex justify-start animate-fade-in">
-          <div className="w-full bg-card border border-border rounded-xl p-6 animate-pulse space-y-3">
-            <div className="h-3 bg-muted rounded w-1/4" />
-            <div className="h-3 bg-muted rounded w-full" />
-            <div className="h-3 bg-muted rounded w-5/6" />
-            <div className="h-3 bg-muted rounded w-full" />
-            <div className="h-3 bg-muted rounded w-3/4" />
-          </div>
+        <div className="animate-fade-in space-y-3">
+          <div className="h-3 bg-muted rounded w-1/4 animate-pulse" />
+          <div className="h-3 bg-muted rounded w-full animate-pulse" />
+          <div className="h-3 bg-muted rounded w-5/6 animate-pulse" />
+          <div className="h-3 bg-muted rounded w-full animate-pulse" />
+          <div className="h-3 bg-muted rounded w-3/4 animate-pulse" />
         </div>
       )}
 
