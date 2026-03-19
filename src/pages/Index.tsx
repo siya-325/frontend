@@ -188,6 +188,12 @@ const Index = () => {
       default:
         return (
           <div className="flex flex-col h-[calc(100vh)] relative">
+            {/* Thread header */}
+            {hasSearched && (
+              <ThreadHeader
+                title={messages.find((m) => m.type === "user")?.content || "Research Thread"}
+              />
+            )}
             {/* Chat area or landing */}
             <div className={`flex-1 overflow-y-auto ${hasSearched ? 'pb-32' : ''}`}>
               {!hasSearched ? (
@@ -229,7 +235,7 @@ const Index = () => {
                   )}
                 </div>
               ) : (
-                <ChatMessages messages={messages} isLoading={isLoading} />
+                <ChatMessages messages={messages} isLoading={isLoading} onDeleteMessage={handleDeleteMessage} />
               )}
             </div>
 
