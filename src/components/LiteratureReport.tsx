@@ -47,12 +47,12 @@ const LiteratureReport = ({ content, papers, onDelete, onOpenFilter }: Literatur
 
   return (
     <div className="w-full animate-fade-in">
-      <div className="space-y-4">
+      <div className="space-y-5">
         <div className="space-y-4">
           {paragraphs.map((p, i) => (
             <p
               key={i}
-              className="text-sm text-muted-foreground leading-[1.8]"
+              className="text-[0.9rem] text-muted-foreground leading-[1.75] tracking-[-0.01em]"
             >
               {p}
             </p>
