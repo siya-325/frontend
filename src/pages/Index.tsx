@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { PanelLeft } from "lucide-react";
 import AppSidebar, { SIDEBAR_EXPANDED, SIDEBAR_COLLAPSED } from "@/components/AppSidebar";
 import SearchBar from "@/components/SearchBar";
 import FilterPanel from "@/components/FilterPanel";
