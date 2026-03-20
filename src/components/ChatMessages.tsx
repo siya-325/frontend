@@ -17,7 +17,7 @@ const ChatMessages = ({ messages, isLoading, onDeleteMessage, onOpenFilter }: Ch
   }, [messages, isLoading]);
 
   return (
-    <div className="w-full max-w-[960px] mx-auto px-6 pt-6 pb-4 space-y-6">
+    <div className="w-full max-w-[1100px] mx-auto px-4 sm:px-6 pt-6 pb-4 space-y-8">
       {messages.map((msg, i) => (
         <div key={i} className="animate-fade-in">
           {msg.type === "user" ? (
