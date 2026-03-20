@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import AppSidebar from "@/components/AppSidebar";
+import AppSidebar, { SIDEBAR_EXPANDED, SIDEBAR_COLLAPSED } from "@/components/AppSidebar";
 import SearchBar from "@/components/SearchBar";
 import FilterPanel from "@/components/FilterPanel";
 import ChatMessages from "@/components/ChatMessages";
@@ -9,9 +9,6 @@ import HelpPage from "@/components/HelpPage";
 import SettingsPage from "@/components/SettingsPage";
 import AboutPage from "@/components/AboutPage";
 import { useIsDesktop } from "@/hooks/use-is-desktop";
-
-const SIDEBAR_EXPANDED = 260;
-const SIDEBAR_COLLAPSED = 64;
 
 export interface ChatMessage {
   type: "user" | "ai";
