@@ -46,28 +46,30 @@ const AppSidebar = ({
         >
           {/* Header */}
           <div className="flex items-center justify-between px-3 h-14 shrink-0">
-            <div className="flex items-center gap-2 min-w-0">
-              <button
-                onClick={!isOpen ? onToggle : undefined}
-                className={`w-8 h-8 rounded-lg bg-primary flex items-center justify-center shrink-0 ${!isOpen ? 'cursor-pointer hover:opacity-90 active:scale-95 transition-all' : ''}`}
-                title={!isOpen ? "Expand sidebar" : undefined}
-              >
-                <span className="text-primary-foreground text-xs font-bold">R</span>
-              </button>
-              {isOpen && (
-                <span className="text-sm font-semibold text-foreground whitespace-nowrap">
-                  Research
-                </span>
-              )}
-            </div>
-            {isOpen && (
-              <button
-                onClick={onToggle}
-                className="p-1.5 rounded-md hover:bg-accent active:scale-95 transition-all text-muted-foreground hover:text-foreground"
-                title="Collapse sidebar"
-              >
-                <ChevronsLeft className="w-4 h-4" />
-              </button>
+            {isOpen ? (
+              <>
+                <div className="flex items-center gap-2 min-w-0">
+                  <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center shrink-0">
+                    <span className="text-primary-foreground text-xs font-bold">R</span>
+                  </div>
+                  <span className="text-sm font-semibold text-foreground whitespace-nowrap">
+                    Research
+                  </span>
+                </div>
+                <button
+                  onClick={onToggle}
+                  className="p-1.5 rounded-md hover:bg-accent active:scale-95 transition-all text-muted-foreground hover:text-foreground"
+                  title="Collapse sidebar"
+                >
+                  <ChevronsLeft className="w-4 h-4" />
+                </button>
+              </>
+            ) : (
+              <div className="flex items-center justify-center w-full">
+                <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center shrink-0">
+                  <span className="text-primary-foreground text-xs font-bold">R</span>
+                </div>
+              </div>
             )}
           </div>
 

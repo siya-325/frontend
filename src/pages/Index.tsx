@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { PanelLeft } from "lucide-react";
 import AppSidebar, { SIDEBAR_EXPANDED, SIDEBAR_COLLAPSED } from "@/components/AppSidebar";
 import SearchBar from "@/components/SearchBar";
 import FilterPanel from "@/components/FilterPanel";
@@ -265,9 +266,20 @@ const Index = () => {
       />
 
       <main
-        className="transition-all duration-300 ease-in-out"
+        className="transition-all duration-200 ease-out relative"
         style={{ marginLeft: mainMarginLeft }}
       >
+        {/* Expand sidebar button — in main content area, like ChatGPT */}
+        {isDesktop && !sidebarOpen && (
+          <button
+            onClick={() => setSidebarOpen(true)}
+            className="fixed top-3.5 z-40 p-2 rounded-md hover:bg-accent active:scale-95 transition-all text-muted-foreground hover:text-foreground"
+            style={{ left: SIDEBAR_COLLAPSED + 8 }}
+            aria-label="Expand sidebar"
+          >
+            <PanelLeft className="w-5 h-5" />
+          </button>
+        )}
         {renderContent()}
       </main>
 
