@@ -134,14 +134,14 @@ const AppSidebar = ({
         </div>
         </aside>
 
-        {/* Floating toggle button outside sidebar edge */}
+        {/* Floating toggle button outside sidebar edge — always visible */}
         <button
           onClick={onToggle}
-          className="fixed top-4 z-40 w-7 h-7 rounded-full bg-sidebar border border-sidebar-border shadow-md hover:bg-accent flex items-center justify-center transition-all duration-300 ease-in-out"
-          style={{ left: (isOpen ? SIDEBAR_EXPANDED : SIDEBAR_COLLAPSED) + 6 }}
+          className="fixed top-3.5 z-[60] w-8 h-8 rounded-lg bg-sidebar border border-sidebar-border shadow-md hover:bg-accent hover:shadow-lg active:scale-95 flex items-center justify-center transition-all duration-200 ease-out"
+          style={{ left: (isOpen ? SIDEBAR_EXPANDED : SIDEBAR_COLLAPSED) - 4 }}
           title={isOpen ? "Collapse sidebar" : "Expand sidebar"}
         >
-          {isOpen ? <PanelLeftClose className="w-3.5 h-3.5 text-muted-foreground" /> : <PanelLeft className="w-3.5 h-3.5 text-muted-foreground" />}
+          {isOpen ? <PanelLeftClose className="w-4 h-4 text-muted-foreground" /> : <PanelLeft className="w-4 h-4 text-muted-foreground" />}
         </button>
       </div>
     );

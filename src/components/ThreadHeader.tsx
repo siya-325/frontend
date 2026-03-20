@@ -42,7 +42,7 @@ const ThreadHeader = ({ title }: ThreadHeaderProps) => {
   const truncated = title.length > 60 ? title.slice(0, 57) + "..." : title;
 
   return (
-    <div className="sticky top-0 z-40 bg-background/80 backdrop-blur-md border-b border-border">
+    <div className="sticky top-0 z-30 bg-background/80 backdrop-blur-md border-b border-border">
       <div className="max-w-[1100px] mx-auto px-4 sm:px-6 py-2.5 flex items-center justify-between gap-4">
         <h2 className="text-sm font-medium text-foreground truncate min-w-0">
           {truncated}
