@@ -55,7 +55,7 @@ const CollapsedLogoToggle = ({ onToggle }: { onToggle: () => void }) => {
   );
 };
 
-
+const AppSidebar = ({
   isOpen, onToggle, isSignedIn, onNewThread, onSelectHistory,
   onNavigate, onSignOut, onSignInClick,
 }: AppSidebarProps) => {
