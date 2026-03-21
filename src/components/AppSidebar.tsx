@@ -231,7 +231,7 @@ const AppSidebar = ({
       {!isOpen && (
         <button
           onClick={onToggle}
-          className="fixed top-3.5 left-3 z-40 p-2 rounded-lg hover:bg-accent active:scale-95 transition-all"
+          className="fixed top-[11px] left-3 z-40 p-2 rounded-lg hover:bg-accent active:scale-95 transition-all"
           aria-label="Open sidebar"
         >
           <PanelLeft className="w-5 h-5 text-muted-foreground" />
