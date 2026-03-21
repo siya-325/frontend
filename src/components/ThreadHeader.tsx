@@ -26,8 +26,12 @@ interface ThreadHeaderProps {
 
 const ThreadHeader = ({ title }: ThreadHeaderProps) => {
   const [visibility, setVisibility] = useState("private");
+  const [saved, setSaved] = useState(false);
 
-  const handleSave = () => toast.success("Thread saved");
+  const handleSave = () => {
+    setSaved((prev) => !prev);
+    toast.success(saved ? "Thread unsaved" : "Thread saved");
+  };
   const handleCopyLink = () => {
     navigator.clipboard.writeText(window.location.href);
     toast.success("Link copied");
@@ -51,10 +55,14 @@ const ThreadHeader = ({ title }: ThreadHeaderProps) => {
         <div className="flex items-center gap-1 shrink-0">
           <button
             onClick={handleSave}
-            className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs text-muted-foreground hover:text-foreground hover:bg-accent transition-colors"
+            className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs transition-colors ${
+              saved
+                ? "text-foreground"
+                : "text-muted-foreground hover:text-foreground hover:bg-accent"
+            }`}
           >
-            <Bookmark className="w-3.5 h-3.5" />
-            <span className="hidden sm:inline">Save</span>
+            <Bookmark className={`w-3.5 h-3.5 ${saved ? "fill-current" : ""}`} />
+            <span className="hidden sm:inline">{saved ? "Saved" : "Save"}</span>
           </button>
 
           <button className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs text-muted-foreground hover:text-foreground hover:bg-accent transition-colors">
