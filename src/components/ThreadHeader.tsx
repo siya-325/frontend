@@ -26,8 +26,12 @@ interface ThreadHeaderProps {
 
 const ThreadHeader = ({ title }: ThreadHeaderProps) => {
   const [visibility, setVisibility] = useState("private");
+  const [saved, setSaved] = useState(false);
 
-  const handleSave = () => toast.success("Thread saved");
+  const handleSave = () => {
+    setSaved((prev) => !prev);
+    toast.success(saved ? "Thread unsaved" : "Thread saved");
+  };
   const handleCopyLink = () => {
     navigator.clipboard.writeText(window.location.href);
     toast.success("Link copied");
