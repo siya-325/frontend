@@ -1,4 +1,5 @@
-import { ChevronsLeft, Plus, Home, Clock, LogIn, X, PanelLeft } from "lucide-react";
+import { useState } from "react";
+import { Plus, Home, Clock, LogIn, X, PanelLeft, PanelLeftClose } from "lucide-react";
 import { useIsDesktop } from "@/hooks/use-is-desktop";
 import ProfileMenu from "./ProfileMenu";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
@@ -26,6 +27,33 @@ const historyItems = [
 
 export const SIDEBAR_EXPANDED = 260;
 export const SIDEBAR_COLLAPSED = 60;
+/** Collapsed state: shows logo, on hover switches to expand icon */
+const CollapsedLogoToggle = ({ onToggle }: { onToggle: () => void }) => {
+  const [hovered, setHovered] = useState(false);
+  return (
+    <div className="flex items-center justify-center w-full">
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <button
+            onClick={onToggle}
+            onMouseEnter={() => setHovered(true)}
+            onMouseLeave={() => setHovered(false)}
+            className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0 transition-colors hover:bg-accent"
+          >
+            {hovered ? (
+              <PanelLeft className="w-4 h-4 text-muted-foreground" />
+            ) : (
+              <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center">
+                <span className="text-primary-foreground text-xs font-bold">R</span>
+              </div>
+            )}
+          </button>
+        </TooltipTrigger>
+        <TooltipContent side="right" sideOffset={8}>Open sidebar</TooltipContent>
+      </Tooltip>
+    </div>
+  );
+};
 
 const AppSidebar = ({
   isOpen, onToggle, isSignedIn, onNewThread, onSelectHistory,
@@ -56,20 +84,20 @@ const AppSidebar = ({
                     Research
                   </span>
                 </div>
-                <button
-                  onClick={onToggle}
-                  className="p-1.5 rounded-md hover:bg-accent active:scale-95 transition-all text-muted-foreground hover:text-foreground"
-                  title="Collapse sidebar"
-                >
-                  <ChevronsLeft className="w-4 h-4" />
-                </button>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <button
+                      onClick={onToggle}
+                      className="p-1.5 rounded-md hover:bg-accent active:scale-95 transition-all text-muted-foreground hover:text-foreground"
+                    >
+                      <PanelLeftClose className="w-4 h-4" />
+                    </button>
+                  </TooltipTrigger>
+                  <TooltipContent side="right" sideOffset={8}>Close sidebar</TooltipContent>
+                </Tooltip>
               </>
             ) : (
-              <div className="flex items-center justify-center w-full">
-                <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center shrink-0">
-                  <span className="text-primary-foreground text-xs font-bold">R</span>
-                </div>
-              </div>
+              <CollapsedLogoToggle onToggle={onToggle} />
             )}
           </div>
 
