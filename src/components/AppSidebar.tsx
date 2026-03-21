@@ -57,20 +57,20 @@ const AppSidebar = ({
                     Research
                   </span>
                 </div>
-                <button
-                  onClick={onToggle}
-                  className="p-1.5 rounded-md hover:bg-accent active:scale-95 transition-all text-muted-foreground hover:text-foreground"
-                  title="Collapse sidebar"
-                >
-                  <ChevronsLeft className="w-4 h-4" />
-                </button>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <button
+                      onClick={onToggle}
+                      className="p-1.5 rounded-md hover:bg-accent active:scale-95 transition-all text-muted-foreground hover:text-foreground"
+                    >
+                      <PanelLeftClose className="w-4 h-4" />
+                    </button>
+                  </TooltipTrigger>
+                  <TooltipContent side="right" sideOffset={8}>Close sidebar</TooltipContent>
+                </Tooltip>
               </>
             ) : (
-              <div className="flex items-center justify-center w-full">
-                <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center shrink-0">
-                  <span className="text-primary-foreground text-xs font-bold">R</span>
-                </div>
-              </div>
+              <CollapsedLogoToggle onToggle={onToggle} />
             )}
           </div>
 
