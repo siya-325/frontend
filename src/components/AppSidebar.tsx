@@ -1,4 +1,5 @@
-import { ChevronsLeft, Plus, Home, Clock, LogIn, X, PanelLeft } from "lucide-react";
+import { useState } from "react";
+import { Plus, Home, Clock, LogIn, X, PanelLeft, PanelLeftClose } from "lucide-react";
 import { useIsDesktop } from "@/hooks/use-is-desktop";
 import ProfileMenu from "./ProfileMenu";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
