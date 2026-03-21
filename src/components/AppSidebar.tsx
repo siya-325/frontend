@@ -27,8 +27,35 @@ const historyItems = [
 
 export const SIDEBAR_EXPANDED = 260;
 export const SIDEBAR_COLLAPSED = 60;
+/** Collapsed state: shows logo, on hover switches to expand icon */
+const CollapsedLogoToggle = ({ onToggle }: { onToggle: () => void }) => {
+  const [hovered, setHovered] = useState(false);
+  return (
+    <div className="flex items-center justify-center w-full">
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <button
+            onClick={onToggle}
+            onMouseEnter={() => setHovered(true)}
+            onMouseLeave={() => setHovered(false)}
+            className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0 transition-colors hover:bg-accent"
+          >
+            {hovered ? (
+              <PanelLeft className="w-4 h-4 text-muted-foreground" />
+            ) : (
+              <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center">
+                <span className="text-primary-foreground text-xs font-bold">R</span>
+              </div>
+            )}
+          </button>
+        </TooltipTrigger>
+        <TooltipContent side="right" sideOffset={8}>Open sidebar</TooltipContent>
+      </Tooltip>
+    </div>
+  );
+};
 
-const AppSidebar = ({
+
   isOpen, onToggle, isSignedIn, onNewThread, onSelectHistory,
   onNavigate, onSignOut, onSignInClick,
 }: AppSidebarProps) => {
