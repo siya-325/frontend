@@ -1,5 +1,23 @@
 import { useState, useRef, useEffect } from "react";
-import { LogOut, Moon, EyeOff, HelpCircle, Settings, Info } from "lucide-react";
+import { LogOut, Moon, Sun, Monitor, EyeOff, HelpCircle, Settings, Info } from "lucide-react";
+
+type Theme = "system" | "light" | "dark";
+
+const themeConfig: Record<Theme, { icon: typeof Sun; label: string; next: Theme }> = {
+  system: { icon: Monitor, label: "System", next: "light" },
+  light: { icon: Sun, label: "Light", next: "dark" },
+  dark: { icon: Moon, label: "Dark", next: "system" },
+};
+
+function applyTheme(theme: Theme) {
+  const root = document.documentElement;
+  if (theme === "system") {
+    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    root.classList.toggle("dark", prefersDark);
+  } else {
+    root.classList.toggle("dark", theme === "dark");
+  }
+}
 
 interface ProfileMenuProps {
   userName: string;
@@ -10,9 +28,22 @@ interface ProfileMenuProps {
 
 const ProfileMenu = ({ userName, userEmail, onSignOut, onNavigate }: ProfileMenuProps) => {
   const [open, setOpen] = useState(false);
-  const [themeToggle, setThemeToggle] = useState(true);
+  const [theme, setTheme] = useState<Theme>(() => (localStorage.getItem("theme") as Theme) || "system");
   const [incognito, setIncognito] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    applyTheme(theme);
+    localStorage.setItem("theme", theme);
+  }, [theme]);
+
+  // Listen for system theme changes when in "system" mode
+  useEffect(() => {
+    const mq = window.matchMedia("(prefers-color-scheme: dark)");
+    const handler = () => { if (theme === "system") applyTheme("system"); };
+    mq.addEventListener("change", handler);
+    return () => mq.removeEventListener("change", handler);
+  }, [theme]);
 
   useEffect(() => {
     const handler = (e: MouseEvent) => {
@@ -23,6 +54,10 @@ const ProfileMenu = ({ userName, userEmail, onSignOut, onNavigate }: ProfileMenu
   }, []);
 
   const initial = userName.charAt(0).toUpperCase();
+  const currentTheme = themeConfig[theme];
+  const ThemeIcon = currentTheme.icon;
+
+  const cycleTheme = () => setTheme(currentTheme.next);
 
   return (
     <div className="relative" ref={ref}>
@@ -38,13 +73,31 @@ const ProfileMenu = ({ userName, userEmail, onSignOut, onNavigate }: ProfileMenu
 
       {open && (
         <div className="absolute bottom-full left-0 mb-2 w-64 bg-popover border border-border rounded-xl shadow-2xl overflow-hidden animate-fade-in-fast z-50">
-          <div className="p-4 border-b border-border">
-            <p className="text-sm font-medium text-foreground">{userName}</p>
-            <p className="text-xs text-muted-foreground">{userEmail}</p>
+          {/* Profile header */}
+          <div className="flex items-center gap-3 p-4 border-b border-border">
+            <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-primary-foreground text-base font-semibold shrink-0">
+              {initial}
+            </div>
+            <div className="min-w-0">
+              <p className="text-sm font-medium text-foreground truncate">{userName}</p>
+              <p className="text-xs text-muted-foreground truncate">{userEmail}</p>
+            </div>
           </div>
 
+          {/* Theme & incognito */}
           <div className="p-1.5">
-            <MenuToggle icon={Moon} label="Dark mode" checked={themeToggle} onChange={setThemeToggle} />
+            <button
+              onClick={cycleTheme}
+              className="flex items-center justify-between w-full px-3 py-2 text-sm text-secondary-foreground rounded-md hover:bg-accent transition-colors"
+            >
+              <span className="flex items-center gap-3">
+                <ThemeIcon className="w-4 h-4 text-muted-foreground" />
+                Toggle theme
+              </span>
+              <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
+                {currentTheme.label}
+              </span>
+            </button>
             <MenuToggle icon={EyeOff} label="Incognito mode" checked={incognito} onChange={setIncognito} />
           </div>
 
