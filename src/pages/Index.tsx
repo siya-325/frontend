@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from "@/components/ui/resizable";
 
 import AppSidebar, { SIDEBAR_EXPANDED, SIDEBAR_COLLAPSED } from "@/components/AppSidebar";
 import SearchBar from "@/components/SearchBar";
