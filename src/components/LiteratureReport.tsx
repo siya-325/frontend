@@ -1,6 +1,4 @@
-import { useState } from "react";
 import ReportActionBar from "./ReportActionBar";
-import ReferencesPanel from "./ReferencesPanel";
 
 interface Paper {
   title: string;
@@ -14,11 +12,11 @@ interface LiteratureReportProps {
   papers: Paper[];
   onDelete: () => void;
   onOpenFilter: () => void;
+  onToggleReferences: () => void;
+  showReferences: boolean;
 }
 
-const LiteratureReport = ({ content, papers, onDelete, onOpenFilter }: LiteratureReportProps) => {
-  const [referencesOpen, setReferencesOpen] = useState(false);
-
+const LiteratureReport = ({ content, papers, onDelete, onOpenFilter, onToggleReferences, showReferences }: LiteratureReportProps) => {
   const generateSummary = () => {
     if (!papers.length) return content;
 
@@ -60,19 +58,13 @@ const LiteratureReport = ({ content, papers, onDelete, onOpenFilter }: Literatur
         </div>
 
         <ReportActionBar
-          onToggleReferences={() => setReferencesOpen((prev) => !prev)}
-          showReferences={referencesOpen}
+          onToggleReferences={onToggleReferences}
+          showReferences={showReferences}
           summaryText={summaryText}
           onDelete={onDelete}
           onOpenFilter={onOpenFilter}
         />
       </div>
-
-      <ReferencesPanel
-        papers={papers}
-        isOpen={referencesOpen}
-        onClose={() => setReferencesOpen(false)}
-      />
     </div>
   );
 };
