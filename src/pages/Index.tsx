@@ -208,7 +208,7 @@ const Index = () => {
             {/* Main area with optional references split */}
             {referencesOpen && hasSearched ? (
               <ResizablePanelGroup direction="horizontal" className="flex-1 overflow-hidden">
-                <ResizablePanel defaultSize={60} minSize={50}>
+                <ResizablePanel defaultSize={50} minSize={20} maxSize={50}>
                   <div className={`h-full overflow-y-auto ${hasSearched ? 'pb-36' : ''}`}>
                     <ChatMessages
                       messages={messages}
@@ -221,7 +221,7 @@ const Index = () => {
                   </div>
                 </ResizablePanel>
                 <ResizableHandle withHandle />
-                <ResizablePanel defaultSize={40} minSize={25} className="hidden sm:block">
+                <ResizablePanel defaultSize={50} minSize={50} className="hidden sm:block">
                   <ReferencesPanel
                     papers={allPapers}
                     onClose={() => setReferencesOpen(false)}
