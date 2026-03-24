@@ -5,6 +5,7 @@ import SearchBar from "@/components/SearchBar";
 import FilterPanel from "@/components/FilterPanel";
 import ChatMessages from "@/components/ChatMessages";
 import ThreadHeader from "@/components/ThreadHeader";
+import ReferencesPanel from "@/components/ReferencesPanel";
 import AuthPage from "@/components/AuthPage";
 import HelpPage from "@/components/HelpPage";
 import SettingsPage from "@/components/SettingsPage";
