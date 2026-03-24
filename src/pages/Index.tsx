@@ -64,12 +64,20 @@ const Index = () => {
   const [isSignedIn, setIsSignedIn] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [filterOpen, setFilterOpen] = useState(false);
+  const [referencesOpen, setReferencesOpen] = useState(false);
   const [query, setQuery] = useState("");
   const [currentPage, setCurrentPage] = useState<string>("home");
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [showAuth, setShowAuth] = useState(false);
   const responseIndex = useRef(0);
+
+  const toggleReferences = () => setReferencesOpen((prev) => !prev);
+
+  // Get all papers from messages for the references panel
+  const allPapers = messages
+    .filter((m) => m.type === "ai" && m.results)
+    .flatMap((m) => m.results || []);
 
   const hasSearched = messages.length > 0;
 

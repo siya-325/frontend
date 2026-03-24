@@ -7,24 +7,18 @@ import {
   Globe,
   Lock,
 } from "lucide-react";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-  DropdownMenuSeparator,
-  DropdownMenuLabel,
-} from "@/components/ui/dropdown-menu";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { toast } from "sonner";
 
 interface ThreadHeaderProps {
   title: string;
+  onToggleReferences: () => void;
+  showReferences: boolean;
 }
 
-const ThreadHeader = ({ title }: ThreadHeaderProps) => {
+const ThreadHeader = ({ title, onToggleReferences, showReferences }: ThreadHeaderProps) => {
   const [visibility, setVisibility] = useState("private");
   const [saved, setSaved] = useState(false);
 
@@ -65,7 +59,14 @@ const ThreadHeader = ({ title }: ThreadHeaderProps) => {
             <span className="hidden sm:inline">{saved ? "Saved" : "Save"}</span>
           </button>
 
-          <button className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs text-muted-foreground hover:text-foreground hover:bg-accent transition-colors">
+          <button
+            onClick={onToggleReferences}
+            className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs transition-colors ${
+              showReferences
+                ? "bg-accent text-foreground"
+                : "text-muted-foreground hover:text-foreground hover:bg-accent"
+            }`}
+          >
             <BookOpen className="w-3.5 h-3.5" />
             <span className="hidden sm:inline">References</span>
           </button>

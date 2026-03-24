@@ -7,9 +7,11 @@ interface ChatMessagesProps {
   isLoading: boolean;
   onDeleteMessage: (index: number) => void;
   onOpenFilter: () => void;
+  onToggleReferences: () => void;
+  showReferences: boolean;
 }
 
-const ChatMessages = ({ messages, isLoading, onDeleteMessage, onOpenFilter }: ChatMessagesProps) => {
+const ChatMessages = ({ messages, isLoading, onDeleteMessage, onOpenFilter, onToggleReferences, showReferences }: ChatMessagesProps) => {
   const bottomRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -34,6 +36,8 @@ const ChatMessages = ({ messages, isLoading, onDeleteMessage, onOpenFilter }: Ch
                   papers={msg.results || []}
                   onDelete={() => onDeleteMessage(i)}
                   onOpenFilter={onOpenFilter}
+                  onToggleReferences={onToggleReferences}
+                  showReferences={showReferences}
                 />
               </div>
             </div>
