@@ -305,6 +305,19 @@ const Index = () => {
       </main>
 
       <FilterPanel isOpen={filterOpen} onClose={() => setFilterOpen(false)} />
+
+      {/* Mobile references overlay */}
+      {referencesOpen && hasSearched && (
+        <div className="fixed inset-0 z-50 sm:hidden">
+          <div className="absolute inset-0 bg-black/50" onClick={() => setReferencesOpen(false)} />
+          <div className="absolute right-0 top-0 h-full w-[85vw] max-w-[380px] animate-slide-in-right">
+            <ReferencesPanel
+              papers={allPapers}
+              onClose={() => setReferencesOpen(false)}
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 };
