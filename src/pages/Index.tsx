@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from "@/components/ui/resizable";
 
 import AppSidebar, { SIDEBAR_EXPANDED, SIDEBAR_COLLAPSED } from "@/components/AppSidebar";
 import SearchBar from "@/components/SearchBar";
@@ -205,8 +206,29 @@ const Index = () => {
             )}
 
             {/* Main area with optional references split */}
-            <div className="flex-1 flex overflow-hidden">
-              {/* Chat content */}
+            {referencesOpen && hasSearched ? (
+              <ResizablePanelGroup direction="horizontal" className="flex-1 overflow-hidden">
+                <ResizablePanel defaultSize={60} minSize={50}>
+                  <div className={`h-full overflow-y-auto ${hasSearched ? 'pb-36' : ''}`}>
+                    <ChatMessages
+                      messages={messages}
+                      isLoading={isLoading}
+                      onDeleteMessage={handleDeleteMessage}
+                      onOpenFilter={() => setFilterOpen(true)}
+                      onToggleReferences={toggleReferences}
+                      showReferences={referencesOpen}
+                    />
+                  </div>
+                </ResizablePanel>
+                <ResizableHandle withHandle />
+                <ResizablePanel defaultSize={40} minSize={25} className="hidden sm:block">
+                  <ReferencesPanel
+                    papers={allPapers}
+                    onClose={() => setReferencesOpen(false)}
+                  />
+                </ResizablePanel>
+              </ResizablePanelGroup>
+            ) : (
               <div className={`flex-1 overflow-y-auto ${hasSearched ? 'pb-36' : ''}`}>
                 {!hasSearched ? (
                   <div className="flex flex-col items-center justify-center min-h-[calc(100vh-4rem)] px-4">
@@ -257,17 +279,7 @@ const Index = () => {
                   />
                 )}
               </div>
-
-              {/* References side panel */}
-              {referencesOpen && hasSearched && (
-                <div className="w-[380px] max-w-[40vw] shrink-0 h-full animate-slide-in-right hidden sm:block">
-                  <ReferencesPanel
-                    papers={allPapers}
-                    onClose={() => setReferencesOpen(false)}
-                  />
-                </div>
-              )}
-            </div>
+            )}
 
             {/* Fixed bottom search bar in chat mode */}
             {hasSearched && (
