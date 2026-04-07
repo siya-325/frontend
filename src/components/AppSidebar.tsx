@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Plus, Home, Clock, LogIn, X, PanelLeft, PanelLeftClose } from "lucide-react";
+import { Plus, Search, Clock, LogIn, X, PanelLeft, PanelLeftClose, Library } from "lucide-react";
 import { useIsDesktop } from "@/hooks/use-is-desktop";
 import ProfileMenu from "./ProfileMenu";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
@@ -28,14 +28,14 @@ const historyItems = [
 export const SIDEBAR_EXPANDED = 260;
 export const SIDEBAR_COLLAPSED = 60;
 /** Collapsed state: shows logo, on hover switches to expand icon */
-const CollapsedLogoToggle = ({ onToggle }: { onToggle: () => void }) => {
+const CollapsedLogoToggle = ({ onToggle, onNavigate }: { onToggle: () => void; onNavigate: (page: string) => void }) => {
   const [hovered, setHovered] = useState(false);
   return (
     <div className="flex items-center justify-center w-full">
       <Tooltip>
         <TooltipTrigger asChild>
           <button
-            onClick={onToggle}
+            onClick={hovered ? onToggle : () => onNavigate("home")}
             onMouseEnter={() => setHovered(true)}
             onMouseLeave={() => setHovered(false)}
             className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0 transition-colors hover:bg-accent"
@@ -49,7 +49,7 @@ const CollapsedLogoToggle = ({ onToggle }: { onToggle: () => void }) => {
             )}
           </button>
         </TooltipTrigger>
-        <TooltipContent side="right" sideOffset={8}>Open sidebar</TooltipContent>
+        <TooltipContent side="right" sideOffset={8}>{hovered ? "Open sidebar" : "Home"}</TooltipContent>
       </Tooltip>
     </div>
   );
@@ -76,14 +76,14 @@ const AppSidebar = ({
           <div className="flex items-center justify-between px-3 h-14 shrink-0">
             {isOpen ? (
               <>
-                <div className="flex items-center gap-2 min-w-0">
+                <button onClick={() => onNavigate("home")} className="flex items-center gap-2 min-w-0 hover:opacity-80 transition-opacity">
                   <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center shrink-0">
                     <span className="text-primary-foreground text-xs font-bold">R</span>
                   </div>
                   <span className="text-sm font-semibold text-foreground whitespace-nowrap">
                     Research
                   </span>
-                </div>
+                </button>
                 <Tooltip>
                   <TooltipTrigger asChild>
                     <button
@@ -97,49 +97,68 @@ const AppSidebar = ({
                 </Tooltip>
               </>
             ) : (
-              <CollapsedLogoToggle onToggle={onToggle} />
+              <CollapsedLogoToggle onToggle={onToggle} onNavigate={onNavigate} />
             )}
           </div>
 
-          {/* New Thread */}
+          {/* New Chat */}
           <div className="px-2 mb-1 shrink-0">
             <Tooltip>
               <TooltipTrigger asChild>
                 <button
                   onClick={onNewThread}
                   className="flex items-center gap-2 w-full px-3 py-2 text-sm rounded-lg border border-border hover:bg-accent active:scale-[0.97] transition-all text-secondary-foreground justify-center"
-                  title="New Thread"
+                  title="New Chat"
                 >
                   <Plus className="w-4 h-4 shrink-0" />
                   {isOpen && (
                     <>
-                      <span className="flex-1 text-left whitespace-nowrap">New Thread</span>
+                      <span className="flex-1 text-left whitespace-nowrap">New Chat</span>
                       <kbd className="text-[10px] text-muted-foreground bg-muted px-1.5 py-0.5 rounded">⌘K</kbd>
                     </>
                   )}
                 </button>
               </TooltipTrigger>
               {!isOpen && (
-                <TooltipContent side="right" sideOffset={8}>New Thread</TooltipContent>
+                <TooltipContent side="right" sideOffset={8}>New Chat</TooltipContent>
               )}
             </Tooltip>
           </div>
 
-          {/* Home */}
+          {/* Search */}
           <div className="px-2 mt-1 shrink-0">
             <Tooltip>
               <TooltipTrigger asChild>
                 <button
-                  onClick={() => onNavigate("home")}
+                  onClick={() => onNavigate("search")}
                   className="flex items-center gap-2 w-full px-3 py-2 text-sm rounded-lg hover:bg-accent active:scale-[0.97] transition-all text-secondary-foreground justify-center"
-                  title="Home"
+                  title="Search"
                 >
-                  <Home className="w-4 h-4 shrink-0" />
-                  {isOpen && <span className="flex-1 text-left whitespace-nowrap">Home</span>}
+                  <Search className="w-4 h-4 shrink-0" />
+                  {isOpen && <span className="flex-1 text-left whitespace-nowrap">Search</span>}
                 </button>
               </TooltipTrigger>
               {!isOpen && (
-                <TooltipContent side="right" sideOffset={8}>Home</TooltipContent>
+                <TooltipContent side="right" sideOffset={8}>Search</TooltipContent>
+              )}
+            </Tooltip>
+          </div>
+
+          {/* My Library */}
+          <div className="px-2 mt-1 shrink-0">
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <button
+                  onClick={() => onNavigate("library")}
+                  className="flex items-center gap-2 w-full px-3 py-2 text-sm rounded-lg hover:bg-accent active:scale-[0.97] transition-all text-secondary-foreground justify-center"
+                  title="My Library"
+                >
+                  <Library className="w-4 h-4 shrink-0" />
+                  {isOpen && <span className="flex-1 text-left whitespace-nowrap">My Library</span>}
+                </button>
+              </TooltipTrigger>
+              {!isOpen && (
+                <TooltipContent side="right" sideOffset={8}>My Library</TooltipContent>
               )}
             </Tooltip>
           </div>
@@ -167,7 +186,7 @@ const AppSidebar = ({
                   <button
                     key={i}
                     onClick={() => onSelectHistory(item)}
-                    className="w-full text-left px-3 py-1.5 text-sm text-muted-foreground hover:text-foreground hover:bg-accent rounded-md transition-colors truncate"
+                    className="w-full text-left px-3 py-1.5 text-sm text-secondary-foreground hover:text-foreground hover:bg-accent rounded-md transition-colors truncate"
                   >
                     {item}
                   </button>
@@ -254,37 +273,48 @@ const AppSidebar = ({
       >
         {/* Header */}
         <div className="flex items-center justify-between p-3 h-14">
-          <div className="flex items-center gap-2">
+          <button onClick={() => { onNavigate("home"); onToggle(); }} className="flex items-center gap-2 hover:opacity-80 transition-opacity">
             <div className="w-7 h-7 rounded-lg bg-primary flex items-center justify-center">
               <span className="text-primary-foreground text-xs font-bold">R</span>
             </div>
             <span className="text-sm font-semibold text-foreground">Research</span>
-          </div>
+          </button>
           <button onClick={onToggle} className="p-1.5 rounded-md hover:bg-accent active:scale-95 transition-all">
             <X className="w-4 h-4 text-muted-foreground" />
           </button>
         </div>
 
-        {/* New Thread */}
+        {/* New Chat */}
         <div className="px-3 mb-1">
           <button
             onClick={() => { onNewThread(); onToggle(); }}
             className="flex items-center gap-2 w-full px-3 py-2 text-sm rounded-lg border border-border hover:bg-accent transition-colors text-secondary-foreground"
           >
             <Plus className="w-4 h-4" />
-            <span className="flex-1 text-left">New Thread</span>
+            <span className="flex-1 text-left">New Chat</span>
             <kbd className="text-[10px] text-muted-foreground bg-muted px-1.5 py-0.5 rounded">⌘K</kbd>
           </button>
         </div>
 
-        {/* Home */}
+        {/* Search */}
         <div className="px-3 mt-1">
           <button
-            onClick={() => { onNavigate("home"); onToggle(); }}
+            onClick={() => { onNavigate("search"); onToggle(); }}
             className="flex items-center gap-2 w-full px-3 py-2 text-sm rounded-lg hover:bg-accent transition-colors text-secondary-foreground"
           >
-            <Home className="w-4 h-4" />
-            Home
+            <Search className="w-4 h-4" />
+            Search
+          </button>
+        </div>
+
+        {/* My Library */}
+        <div className="px-3 mt-1">
+          <button
+            onClick={() => { onNavigate("library"); onToggle(); }}
+            className="flex items-center gap-2 w-full px-3 py-2 text-sm rounded-lg hover:bg-accent transition-colors text-secondary-foreground"
+          >
+            <Library className="w-4 h-4" />
+            My Library
           </button>
         </div>
 
@@ -299,7 +329,7 @@ const AppSidebar = ({
               <button
                 key={i}
                 onClick={() => { onSelectHistory(item); onToggle(); }}
-                className="w-full text-left px-3 py-1.5 text-sm text-muted-foreground hover:text-foreground hover:bg-accent rounded-md transition-colors truncate"
+                className="w-full text-left px-3 py-1.5 text-sm text-secondary-foreground hover:text-foreground hover:bg-accent rounded-md transition-colors truncate"
               >
                 {item}
               </button>
