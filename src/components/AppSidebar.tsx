@@ -329,7 +329,7 @@ const AppSidebar = ({
               <button
                 key={i}
                 onClick={() => { onSelectHistory(item); onToggle(); }}
-                className="w-full text-left px-3 py-1.5 text-sm text-muted-foreground hover:text-foreground hover:bg-accent rounded-md transition-colors truncate"
+                className="w-full text-left px-3 py-1.5 text-sm text-secondary-foreground hover:text-foreground hover:bg-accent rounded-md transition-colors truncate"
               >
                 {item}
               </button>
