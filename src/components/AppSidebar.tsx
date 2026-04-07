@@ -101,45 +101,64 @@ const AppSidebar = ({
             )}
           </div>
 
-          {/* New Thread */}
+          {/* New Chat */}
           <div className="px-2 mb-1 shrink-0">
             <Tooltip>
               <TooltipTrigger asChild>
                 <button
                   onClick={onNewThread}
                   className="flex items-center gap-2 w-full px-3 py-2 text-sm rounded-lg border border-border hover:bg-accent active:scale-[0.97] transition-all text-secondary-foreground justify-center"
-                  title="New Thread"
+                  title="New Chat"
                 >
                   <Plus className="w-4 h-4 shrink-0" />
                   {isOpen && (
                     <>
-                      <span className="flex-1 text-left whitespace-nowrap">New Thread</span>
+                      <span className="flex-1 text-left whitespace-nowrap">New Chat</span>
                       <kbd className="text-[10px] text-muted-foreground bg-muted px-1.5 py-0.5 rounded">⌘K</kbd>
                     </>
                   )}
                 </button>
               </TooltipTrigger>
               {!isOpen && (
-                <TooltipContent side="right" sideOffset={8}>New Thread</TooltipContent>
+                <TooltipContent side="right" sideOffset={8}>New Chat</TooltipContent>
               )}
             </Tooltip>
           </div>
 
-          {/* Home */}
+          {/* Search */}
           <div className="px-2 mt-1 shrink-0">
             <Tooltip>
               <TooltipTrigger asChild>
                 <button
-                  onClick={() => onNavigate("home")}
+                  onClick={() => onNavigate("search")}
                   className="flex items-center gap-2 w-full px-3 py-2 text-sm rounded-lg hover:bg-accent active:scale-[0.97] transition-all text-secondary-foreground justify-center"
-                  title="Home"
+                  title="Search"
                 >
-                  <Home className="w-4 h-4 shrink-0" />
-                  {isOpen && <span className="flex-1 text-left whitespace-nowrap">Home</span>}
+                  <Search className="w-4 h-4 shrink-0" />
+                  {isOpen && <span className="flex-1 text-left whitespace-nowrap">Search</span>}
                 </button>
               </TooltipTrigger>
               {!isOpen && (
-                <TooltipContent side="right" sideOffset={8}>Home</TooltipContent>
+                <TooltipContent side="right" sideOffset={8}>Search</TooltipContent>
+              )}
+            </Tooltip>
+          </div>
+
+          {/* My Library */}
+          <div className="px-2 mt-1 shrink-0">
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <button
+                  onClick={() => onNavigate("library")}
+                  className="flex items-center gap-2 w-full px-3 py-2 text-sm rounded-lg hover:bg-accent active:scale-[0.97] transition-all text-secondary-foreground justify-center"
+                  title="My Library"
+                >
+                  <Library className="w-4 h-4 shrink-0" />
+                  {isOpen && <span className="flex-1 text-left whitespace-nowrap">My Library</span>}
+                </button>
+              </TooltipTrigger>
+              {!isOpen && (
+                <TooltipContent side="right" sideOffset={8}>My Library</TooltipContent>
               )}
             </Tooltip>
           </div>
