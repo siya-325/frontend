@@ -13,6 +13,7 @@ interface AppSidebarProps {
   onNavigate: (page: string) => void;
   onSignOut: () => void;
   onSignInClick: () => void;
+  onSearchChats: () => void;
 }
 
 const historyItems = [
@@ -57,7 +58,7 @@ const CollapsedLogoToggle = ({ onToggle, onNavigate }: { onToggle: () => void; o
 
 const AppSidebar = ({
   isOpen, onToggle, isSignedIn, onNewThread, onSelectHistory,
-  onNavigate, onSignOut, onSignInClick,
+  onNavigate, onSignOut, onSignInClick, onSearchChats,
 }: AppSidebarProps) => {
   const isDesktop = useIsDesktop();
 
@@ -129,17 +130,17 @@ const AppSidebar = ({
           <div className="px-2 mt-1 shrink-0">
             <Tooltip>
               <TooltipTrigger asChild>
-                <button
-                  onClick={() => onNavigate("search")}
+              <button
+                  onClick={onSearchChats}
                   className="flex items-center gap-2 w-full px-3 py-2 text-sm rounded-lg hover:bg-accent active:scale-[0.97] transition-all text-secondary-foreground justify-center"
-                  title="Search"
+                  title="Search Chats"
                 >
                   <Search className="w-4 h-4 shrink-0" />
-                  {isOpen && <span className="flex-1 text-left whitespace-nowrap">Search</span>}
+                  {isOpen && <span className="flex-1 text-left whitespace-nowrap">Search Chats</span>}
                 </button>
               </TooltipTrigger>
               {!isOpen && (
-                <TooltipContent side="right" sideOffset={8}>Search</TooltipContent>
+                <TooltipContent side="right" sideOffset={8}>Search Chats</TooltipContent>
               )}
             </Tooltip>
           </div>
@@ -299,11 +300,11 @@ const AppSidebar = ({
         {/* Search */}
         <div className="px-3 mt-1">
           <button
-            onClick={() => { onNavigate("search"); onToggle(); }}
+            onClick={() => { onSearchChats(); onToggle(); }}
             className="flex items-center gap-2 w-full px-3 py-2 text-sm rounded-lg hover:bg-accent transition-colors text-secondary-foreground"
           >
             <Search className="w-4 h-4" />
-            Search
+            Search Chats
           </button>
         </div>
 
