@@ -28,14 +28,14 @@ const historyItems = [
 export const SIDEBAR_EXPANDED = 260;
 export const SIDEBAR_COLLAPSED = 60;
 /** Collapsed state: shows logo, on hover switches to expand icon */
-const CollapsedLogoToggle = ({ onToggle }: { onToggle: () => void }) => {
+const CollapsedLogoToggle = ({ onToggle, onNavigate }: { onToggle: () => void; onNavigate: (page: string) => void }) => {
   const [hovered, setHovered] = useState(false);
   return (
     <div className="flex items-center justify-center w-full">
       <Tooltip>
         <TooltipTrigger asChild>
           <button
-            onClick={onToggle}
+            onClick={hovered ? onToggle : () => onNavigate("home")}
             onMouseEnter={() => setHovered(true)}
             onMouseLeave={() => setHovered(false)}
             className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0 transition-colors hover:bg-accent"
@@ -49,7 +49,7 @@ const CollapsedLogoToggle = ({ onToggle }: { onToggle: () => void }) => {
             )}
           </button>
         </TooltipTrigger>
-        <TooltipContent side="right" sideOffset={8}>Open sidebar</TooltipContent>
+        <TooltipContent side="right" sideOffset={8}>{hovered ? "Open sidebar" : "Home"}</TooltipContent>
       </Tooltip>
     </div>
   );
@@ -76,14 +76,14 @@ const AppSidebar = ({
           <div className="flex items-center justify-between px-3 h-14 shrink-0">
             {isOpen ? (
               <>
-                <div className="flex items-center gap-2 min-w-0">
+                <button onClick={() => onNavigate("home")} className="flex items-center gap-2 min-w-0 hover:opacity-80 transition-opacity">
                   <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center shrink-0">
                     <span className="text-primary-foreground text-xs font-bold">R</span>
                   </div>
                   <span className="text-sm font-semibold text-foreground whitespace-nowrap">
                     Research
                   </span>
-                </div>
+                </button>
                 <Tooltip>
                   <TooltipTrigger asChild>
                     <button
@@ -97,7 +97,7 @@ const AppSidebar = ({
                 </Tooltip>
               </>
             ) : (
-              <CollapsedLogoToggle onToggle={onToggle} />
+              <CollapsedLogoToggle onToggle={onToggle} onNavigate={onNavigate} />
             )}
           </div>
 
@@ -167,7 +167,7 @@ const AppSidebar = ({
                   <button
                     key={i}
                     onClick={() => onSelectHistory(item)}
-                    className="w-full text-left px-3 py-1.5 text-sm text-muted-foreground hover:text-foreground hover:bg-accent rounded-md transition-colors truncate"
+                    className="w-full text-left px-3 py-1.5 text-sm text-secondary-foreground hover:text-foreground hover:bg-accent rounded-md transition-colors truncate"
                   >
                     {item}
                   </button>
