@@ -11,6 +11,7 @@ import AuthPage from "@/components/AuthPage";
 import HelpPage from "@/components/HelpPage";
 import SettingsPage from "@/components/SettingsPage";
 import AboutPage from "@/components/AboutPage";
+import SearchChatsDialog from "@/components/SearchChatsDialog";
 import { useIsDesktop } from "@/hooks/use-is-desktop";
 
 export interface ChatMessage {
@@ -72,6 +73,7 @@ const Index = () => {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [showAuth, setShowAuth] = useState(false);
+  const [searchChatsOpen, setSearchChatsOpen] = useState(false);
   const responseIndex = useRef(0);
 
   const toggleReferences = () => setReferencesOpen((prev) => !prev);
@@ -307,6 +309,7 @@ const Index = () => {
         onNavigate={setCurrentPage}
         onSignOut={handleSignOut}
         onSignInClick={() => setShowAuth(true)}
+        onSearchChats={() => setSearchChatsOpen(true)}
       />
 
       <main
@@ -317,6 +320,22 @@ const Index = () => {
       </main>
 
       <FilterPanel isOpen={filterOpen} onClose={() => setFilterOpen(false)} />
+
+      <SearchChatsDialog
+        isOpen={searchChatsOpen}
+        onClose={() => setSearchChatsOpen(false)}
+        onNewChat={handleNewThread}
+        onSelectChat={handleSelectHistory}
+        historyItems={[
+          "Effects of caffeine on cognitive performance",
+          "Climate change impact on agriculture",
+          "Machine learning in healthcare diagnosis",
+          "Benefits of meditation on anxiety",
+          "Quantum computing applications",
+          "Gut microbiome and mental health",
+          "Renewable energy efficiency trends",
+        ]}
+      />
 
       {/* Mobile references overlay */}
       {referencesOpen && hasSearched && (
