@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Plus, Home, Clock, LogIn, X, PanelLeft, PanelLeftClose } from "lucide-react";
+import { Plus, Search, Clock, LogIn, X, PanelLeft, PanelLeftClose, Library } from "lucide-react";
 import { useIsDesktop } from "@/hooks/use-is-desktop";
 import ProfileMenu from "./ProfileMenu";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
