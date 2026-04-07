@@ -273,37 +273,48 @@ const AppSidebar = ({
       >
         {/* Header */}
         <div className="flex items-center justify-between p-3 h-14">
-          <div className="flex items-center gap-2">
+          <button onClick={() => { onNavigate("home"); onToggle(); }} className="flex items-center gap-2 hover:opacity-80 transition-opacity">
             <div className="w-7 h-7 rounded-lg bg-primary flex items-center justify-center">
               <span className="text-primary-foreground text-xs font-bold">R</span>
             </div>
             <span className="text-sm font-semibold text-foreground">Research</span>
-          </div>
+          </button>
           <button onClick={onToggle} className="p-1.5 rounded-md hover:bg-accent active:scale-95 transition-all">
             <X className="w-4 h-4 text-muted-foreground" />
           </button>
         </div>
 
-        {/* New Thread */}
+        {/* New Chat */}
         <div className="px-3 mb-1">
           <button
             onClick={() => { onNewThread(); onToggle(); }}
             className="flex items-center gap-2 w-full px-3 py-2 text-sm rounded-lg border border-border hover:bg-accent transition-colors text-secondary-foreground"
           >
             <Plus className="w-4 h-4" />
-            <span className="flex-1 text-left">New Thread</span>
+            <span className="flex-1 text-left">New Chat</span>
             <kbd className="text-[10px] text-muted-foreground bg-muted px-1.5 py-0.5 rounded">⌘K</kbd>
           </button>
         </div>
 
-        {/* Home */}
+        {/* Search */}
         <div className="px-3 mt-1">
           <button
-            onClick={() => { onNavigate("home"); onToggle(); }}
+            onClick={() => { onNavigate("search"); onToggle(); }}
             className="flex items-center gap-2 w-full px-3 py-2 text-sm rounded-lg hover:bg-accent transition-colors text-secondary-foreground"
           >
-            <Home className="w-4 h-4" />
-            Home
+            <Search className="w-4 h-4" />
+            Search
+          </button>
+        </div>
+
+        {/* My Library */}
+        <div className="px-3 mt-1">
+          <button
+            onClick={() => { onNavigate("library"); onToggle(); }}
+            className="flex items-center gap-2 w-full px-3 py-2 text-sm rounded-lg hover:bg-accent transition-colors text-secondary-foreground"
+          >
+            <Library className="w-4 h-4" />
+            My Library
           </button>
         </div>
 
