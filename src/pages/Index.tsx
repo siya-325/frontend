@@ -289,6 +289,8 @@ const Index = () => {
                   <ReferencesPanel
                     papers={allPapers}
                     onClose={() => setReferencesOpen(false)}
+                    onSavePaper={handleSaveSinglePaper}
+                    savedPaperTitles={savedPapers.map((p) => p.title)}
                   />
                 </ResizablePanel>
               </ResizablePanelGroup>
@@ -407,6 +409,8 @@ const Index = () => {
             <ReferencesPanel
               papers={allPapers}
               onClose={() => setReferencesOpen(false)}
+              onSavePaper={handleSaveSinglePaper}
+              savedPaperTitles={savedPapers.map((p) => p.title)}
             />
           </div>
         </div>
