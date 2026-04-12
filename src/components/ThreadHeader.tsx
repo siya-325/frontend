@@ -42,7 +42,7 @@ const ThreadHeader = ({ title, onToggleReferences, showReferences, onSave, onUns
     );
   };
 
-  const truncated = title.length > 60 ? title.slice(0, 57) + "..." : title;
+  const [visibility, setVisibility] = useState("private");
 
   return (
     <div className="sticky top-0 z-30 bg-background/80 backdrop-blur-md border-b border-border">
@@ -53,13 +53,13 @@ const ThreadHeader = ({ title, onToggleReferences, showReferences, onSave, onUns
           <button
             onClick={handleSave}
             className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs transition-colors ${
-              saved
+              isSaved
                 ? "text-foreground"
                 : "text-muted-foreground hover:text-foreground hover:bg-accent"
             }`}
           >
-            <Bookmark className={`w-3.5 h-3.5 ${saved ? "fill-current" : ""}`} />
-            <span className="hidden sm:inline">{saved ? "Saved" : "Save"}</span>
+            <Bookmark className={`w-3.5 h-3.5 ${isSaved ? "fill-current" : ""}`} />
+            <span className="hidden sm:inline">{isSaved ? "Saved" : "Save"}</span>
           </button>
 
           <button
