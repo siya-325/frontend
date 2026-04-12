@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from "@/components/ui/resizable";
 
 import AppSidebar, { SIDEBAR_EXPANDED, SIDEBAR_COLLAPSED } from "@/components/AppSidebar";
@@ -12,6 +12,7 @@ import HelpPage from "@/components/HelpPage";
 import SettingsPage from "@/components/SettingsPage";
 import AboutPage from "@/components/AboutPage";
 import SearchChatsDialog from "@/components/SearchChatsDialog";
+import LibraryPage, { SavedPaper, SavedThread } from "@/components/LibraryPage";
 import { useIsDesktop } from "@/hooks/use-is-desktop";
 
 export interface ChatMessage {
@@ -74,7 +75,47 @@ const Index = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [showAuth, setShowAuth] = useState(false);
   const [searchChatsOpen, setSearchChatsOpen] = useState(false);
+  const [savedPapers, setSavedPapers] = useState<SavedPaper[]>([]);
+  const [savedThreads, setSavedThreads] = useState<SavedThread[]>([]);
   const responseIndex = useRef(0);
+
+  const handleSaveThread = useCallback(() => {
+    // Save current thread's papers and thread info to library
+    const currentPapers = messages
+      .filter((m) => m.type === "ai" && m.results)
+      .flatMap((m) => m.results || []);
+    
+    const threadTitle = messages.find((m) => m.type === "user")?.content || "Research Thread";
+    const threadPreview = messages.find((m) => m.type === "ai")?.content || "";
+
+    // Add papers that aren't already saved
+    const newPapers: SavedPaper[] = currentPapers
+      .filter((p) => !savedPapers.some((sp) => sp.title === p.title))
+      .map((p) => ({
+        id: crypto.randomUUID(),
+        title: p.title,
+        authors: p.authors,
+        year: p.year,
+        journal: p.abstract.slice(0, 30) + "...",
+      }));
+
+    if (newPapers.length > 0) {
+      setSavedPapers((prev) => [...prev, ...newPapers]);
+    }
+
+    // Add thread if not already saved
+    if (!savedThreads.some((t) => t.title === threadTitle)) {
+      setSavedThreads((prev) => [
+        ...prev,
+        { id: crypto.randomUUID(), title: threadTitle, preview: threadPreview },
+      ]);
+    }
+  }, [messages, savedPapers, savedThreads]);
+
+  const handleUnsaveThread = useCallback(() => {
+    const threadTitle = messages.find((m) => m.type === "user")?.content || "Research Thread";
+    setSavedThreads((prev) => prev.filter((t) => t.title !== threadTitle));
+  }, [messages]);
 
   const toggleReferences = () => setReferencesOpen((prev) => !prev);
 
@@ -195,6 +236,16 @@ const Index = () => {
       case "help": return <HelpPage />;
       case "settings": return <SettingsPage />;
       case "about": return <AboutPage />;
+      case "library":
+        return (
+          <LibraryPage
+            papers={savedPapers}
+            threads={savedThreads}
+            onRemovePaper={(id) => setSavedPapers((prev) => prev.filter((p) => p.id !== id))}
+            onRemoveThread={(id) => setSavedThreads((prev) => prev.filter((t) => t.id !== id))}
+            onSelectThread={(title) => { handleSelectHistory(title); }}
+          />
+        );
       default:
         return (
           <div className="flex flex-col h-[calc(100vh)] relative">
@@ -204,6 +255,9 @@ const Index = () => {
                 title={messages.find((m) => m.type === "user")?.content || "Research Thread"}
                 onToggleReferences={toggleReferences}
                 showReferences={referencesOpen}
+                onSave={handleSaveThread}
+                onUnsave={handleUnsaveThread}
+                isSaved={savedThreads.some((t) => t.title === (messages.find((m) => m.type === "user")?.content || "Research Thread"))}
               />
             )}
 
