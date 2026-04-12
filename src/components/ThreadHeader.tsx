@@ -16,15 +16,20 @@ interface ThreadHeaderProps {
   title: string;
   onToggleReferences: () => void;
   showReferences: boolean;
+  onSave: () => void;
+  onUnsave: () => void;
+  isSaved: boolean;
 }
 
-const ThreadHeader = ({ title, onToggleReferences, showReferences }: ThreadHeaderProps) => {
-  const [visibility, setVisibility] = useState("private");
-  const [saved, setSaved] = useState(false);
-
+const ThreadHeader = ({ title, onToggleReferences, showReferences, onSave, onUnsave, isSaved }: ThreadHeaderProps) => {
   const handleSave = () => {
-    setSaved((prev) => !prev);
-    toast.success(saved ? "Thread unsaved" : "Thread saved");
+    if (isSaved) {
+      onUnsave();
+      toast.success("Thread unsaved");
+    } else {
+      onSave();
+      toast.success("Thread saved to Library");
+    }
   };
   const handleCopyLink = () => {
     navigator.clipboard.writeText(window.location.href);
