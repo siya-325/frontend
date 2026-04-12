@@ -236,6 +236,16 @@ const Index = () => {
       case "help": return <HelpPage />;
       case "settings": return <SettingsPage />;
       case "about": return <AboutPage />;
+      case "library":
+        return (
+          <LibraryPage
+            papers={savedPapers}
+            threads={savedThreads}
+            onRemovePaper={(id) => setSavedPapers((prev) => prev.filter((p) => p.id !== id))}
+            onRemoveThread={(id) => setSavedThreads((prev) => prev.filter((t) => t.id !== id))}
+            onSelectThread={(title) => { handleSelectHistory(title); }}
+          />
+        );
       default:
         return (
           <div className="flex flex-col h-[calc(100vh)] relative">
@@ -245,6 +255,9 @@ const Index = () => {
                 title={messages.find((m) => m.type === "user")?.content || "Research Thread"}
                 onToggleReferences={toggleReferences}
                 showReferences={referencesOpen}
+                onSave={handleSaveThread}
+                onUnsave={handleUnsaveThread}
+                isSaved={savedThreads.some((t) => t.title === (messages.find((m) => m.type === "user")?.content || "Research Thread"))}
               />
             )}
 
