@@ -117,6 +117,14 @@ const Index = () => {
     setSavedThreads((prev) => prev.filter((t) => t.title !== threadTitle));
   }, [messages]);
 
+  const handleSaveSinglePaper = useCallback((paper: { title: string; authors: string; year: number; abstract: string }) => {
+    if (savedPapers.some((sp) => sp.title === paper.title)) return;
+    setSavedPapers((prev) => [
+      ...prev,
+      { id: crypto.randomUUID(), title: paper.title, authors: paper.authors, year: paper.year },
+    ]);
+  }, [savedPapers]);
+
   const toggleReferences = () => setReferencesOpen((prev) => !prev);
 
   // Get all papers from messages for the references panel
@@ -281,6 +289,8 @@ const Index = () => {
                   <ReferencesPanel
                     papers={allPapers}
                     onClose={() => setReferencesOpen(false)}
+                    onSavePaper={handleSaveSinglePaper}
+                    savedPaperTitles={savedPapers.map((p) => p.title)}
                   />
                 </ResizablePanel>
               </ResizablePanelGroup>
@@ -399,6 +409,8 @@ const Index = () => {
             <ReferencesPanel
               papers={allPapers}
               onClose={() => setReferencesOpen(false)}
+              onSavePaper={handleSaveSinglePaper}
+              savedPaperTitles={savedPapers.map((p) => p.title)}
             />
           </div>
         </div>
