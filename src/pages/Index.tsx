@@ -373,7 +373,8 @@ const Index = () => {
         onSelectHistory={handleSelectHistory}
         onNavigate={setCurrentPage}
         onSignOut={handleSignOut}
-        onSignInClick={() => setShowAuth(true)}
+        onSignInClick={() => { setAuthMode("signin"); setShowAuth(true); }}
+        onSignUpClick={() => { setAuthMode("signup"); setShowAuth(true); }}
         onSearchChats={() => setSearchChatsOpen(true)}
       />
 
