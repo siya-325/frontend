@@ -37,13 +37,21 @@ interface ThreadHeaderProps {
 const ThreadHeader = ({ title, onToggleReferences, showReferences, onSave, onUnsave, isSaved }: ThreadHeaderProps) => {
   const [isSubscribed, setIsSubscribed] = useState(true);
   const [visibility, setVisibility] = useState("private");
+  const [confirmUnsubOpen, setConfirmUnsubOpen] = useState(false);
 
-  const handleSubscribe = () => {
-    setIsSubscribed((s) => {
-      const next = !s;
-      toast.success(next ? "Subscribed" : "Unsubscribed");
-      return next;
-    });
+  const handleSubscribeClick = () => {
+    if (isSubscribed) {
+      setConfirmUnsubOpen(true);
+    } else {
+      setIsSubscribed(true);
+      toast.success("Subscribed");
+    }
+  };
+
+  const confirmUnsubscribe = () => {
+    setIsSubscribed(false);
+    setConfirmUnsubOpen(false);
+    toast.success("Unsubscribed");
   };
 
   const handleSave = () => {
