@@ -2,10 +2,16 @@ import { useState } from "react";
 
 interface AuthPageProps {
   onSignIn: () => void;
+  initialMode?: "signin" | "signup";
 }
 
-const AuthPage = ({ onSignIn }: AuthPageProps) => {
+const AuthPage = ({ onSignIn, initialMode = "signin" }: AuthPageProps) => {
+  const [mode, setMode] = useState<"signin" | "signup">(initialMode);
   const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [name, setName] = useState("");
+
+  const isSignup = mode === "signup";
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -19,11 +25,24 @@ const AuthPage = ({ onSignIn }: AuthPageProps) => {
           <div className="w-12 h-12 rounded-2xl bg-primary flex items-center justify-center mx-auto mb-4">
             <span className="text-primary-foreground text-lg font-bold">R</span>
           </div>
-          <h1 className="text-xl font-semibold text-foreground">Welcome back</h1>
-          <p className="text-sm text-muted-foreground mt-1">Sign in to continue your research</p>
+          <h1 className="text-xl font-semibold text-foreground">
+            {isSignup ? "Create your account" : "Welcome back"}
+          </h1>
+          <p className="text-sm text-muted-foreground mt-1">
+            {isSignup ? "Sign up to start your research" : "Sign in to continue your research"}
+          </p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-3">
+          {isSignup && (
+            <input
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder="Full name"
+              className="w-full bg-card border border-border rounded-xl px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground outline-none focus:border-primary/50 transition-colors"
+            />
+          )}
           <input
             type="email"
             value={email}
@@ -31,11 +50,18 @@ const AuthPage = ({ onSignIn }: AuthPageProps) => {
             placeholder="Enter your email"
             className="w-full bg-card border border-border rounded-xl px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground outline-none focus:border-primary/50 transition-colors"
           />
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder={isSignup ? "Create a password" : "Password"}
+            className="w-full bg-card border border-border rounded-xl px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground outline-none focus:border-primary/50 transition-colors"
+          />
           <button
             type="submit"
             className="w-full bg-primary text-primary-foreground rounded-xl py-3 text-sm font-medium hover:opacity-90 transition-opacity"
           >
-            Continue
+            {isSignup ? "Create account" : "Continue"}
           </button>
         </form>
 
@@ -57,6 +83,17 @@ const AuthPage = ({ onSignIn }: AuthPageProps) => {
           </svg>
           Continue with Google
         </button>
+
+        <p className="text-center text-xs text-muted-foreground mt-6">
+          {isSignup ? "Already have an account?" : "Don't have an account?"}{" "}
+          <button
+            type="button"
+            onClick={() => setMode(isSignup ? "signin" : "signup")}
+            className="text-foreground font-medium hover:underline"
+          >
+            {isSignup ? "Sign in" : "Sign up"}
+          </button>
+        </p>
       </div>
     </div>
   );
