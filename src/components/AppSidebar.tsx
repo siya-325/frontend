@@ -380,13 +380,22 @@ const AppSidebar = ({
               onNavigate={(page) => { onNavigate(page); onToggle(); }}
             />
           ) : (
-            <button
-              onClick={() => { onSignInClick(); onToggle(); }}
-              className="flex items-center gap-2 w-full px-3 py-2 text-sm rounded-lg hover:bg-accent transition-colors text-secondary-foreground"
-            >
-              <LogIn className="w-4 h-4" />
-              Sign in
-            </button>
+            <div className="flex flex-col gap-2">
+              <button
+                onClick={() => { onSignInClick(); onToggle(); }}
+                className="flex items-center justify-center gap-2 w-full px-3 py-2 text-sm rounded-lg hover:bg-accent transition-colors text-secondary-foreground"
+              >
+                <LogIn className="w-4 h-4" />
+                Sign in
+              </button>
+              <button
+                onClick={() => { onSignUpClick(); onToggle(); }}
+                className="flex items-center justify-center gap-2 w-full px-3 py-2 text-sm rounded-lg bg-primary text-primary-foreground hover:opacity-90 transition-opacity"
+              >
+                <UserPlus className="w-4 h-4" />
+                Sign up
+              </button>
+            </div>
           )}
         </div>
       </aside>
