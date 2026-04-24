@@ -224,20 +224,49 @@ const AppSidebar = ({
                 </Tooltip>
               )
             ) : (
-              <Tooltip>
-                <TooltipTrigger asChild>
+              isOpen ? (
+                <div className="flex flex-col gap-1">
                   <button
                     onClick={onSignInClick}
                     className="flex items-center gap-2 w-full px-3 py-2 text-sm rounded-lg hover:bg-accent transition-colors text-secondary-foreground justify-center"
                   >
                     <LogIn className="w-4 h-4 shrink-0" />
-                    {isOpen && <span className="whitespace-nowrap">Sign in</span>}
+                    <span className="whitespace-nowrap">Sign in</span>
                   </button>
-                </TooltipTrigger>
-                {!isOpen && (
-                  <TooltipContent side="right" sideOffset={8}>Sign in</TooltipContent>
-                )}
-              </Tooltip>
+                  <button
+                    onClick={onSignUpClick}
+                    className="flex items-center gap-2 w-full px-3 py-2 text-sm rounded-lg bg-primary text-primary-foreground hover:opacity-90 transition-opacity justify-center"
+                  >
+                    <UserPlus className="w-4 h-4 shrink-0" />
+                    <span className="whitespace-nowrap">Sign up</span>
+                  </button>
+                </div>
+              ) : (
+                <div className="flex flex-col gap-1">
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <button
+                        onClick={onSignInClick}
+                        className="flex items-center justify-center w-full px-3 py-2 text-sm rounded-lg hover:bg-accent transition-colors text-secondary-foreground"
+                      >
+                        <LogIn className="w-4 h-4 shrink-0" />
+                      </button>
+                    </TooltipTrigger>
+                    <TooltipContent side="right" sideOffset={8}>Sign in</TooltipContent>
+                  </Tooltip>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <button
+                        onClick={onSignUpClick}
+                        className="flex items-center justify-center w-full px-3 py-2 text-sm rounded-lg bg-primary text-primary-foreground hover:opacity-90 transition-opacity"
+                      >
+                        <UserPlus className="w-4 h-4 shrink-0" />
+                      </button>
+                    </TooltipTrigger>
+                    <TooltipContent side="right" sideOffset={8}>Sign up</TooltipContent>
+                  </Tooltip>
+                </div>
+              )
             )}
           </div>
         </aside>
