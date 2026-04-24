@@ -82,7 +82,7 @@ const ThreadHeader = ({ title, onToggleReferences, showReferences, onSave, onUns
 
           <div className="flex items-center gap-1.5 shrink-0">
             <button
-              onClick={handleSubscribe}
+              onClick={handleSubscribeClick}
               className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium border transition-colors ${
                 isSubscribed
                   ? "bg-primary text-primary-foreground border-primary hover:bg-primary/90"
