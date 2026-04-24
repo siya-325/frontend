@@ -74,6 +74,7 @@ const Index = () => {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [showAuth, setShowAuth] = useState(false);
+  const [authMode, setAuthMode] = useState<"signin" | "signup">("signin");
   const [searchChatsOpen, setSearchChatsOpen] = useState(false);
   const [savedPapers, setSavedPapers] = useState<SavedPaper[]>([]);
   const [savedThreads, setSavedThreads] = useState<SavedThread[]>([]);
