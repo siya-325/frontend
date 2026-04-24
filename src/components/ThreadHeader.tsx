@@ -13,6 +13,16 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from "@/components/ui/tooltip";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { toast } from "sonner";
 
 interface ThreadHeaderProps {
@@ -27,13 +37,21 @@ interface ThreadHeaderProps {
 const ThreadHeader = ({ title, onToggleReferences, showReferences, onSave, onUnsave, isSaved }: ThreadHeaderProps) => {
   const [isSubscribed, setIsSubscribed] = useState(true);
   const [visibility, setVisibility] = useState("private");
+  const [confirmUnsubOpen, setConfirmUnsubOpen] = useState(false);
 
-  const handleSubscribe = () => {
-    setIsSubscribed((s) => {
-      const next = !s;
-      toast.success(next ? "Subscribed" : "Unsubscribed");
-      return next;
-    });
+  const handleSubscribeClick = () => {
+    if (isSubscribed) {
+      setConfirmUnsubOpen(true);
+    } else {
+      setIsSubscribed(true);
+      toast.success("Subscribed");
+    }
+  };
+
+  const confirmUnsubscribe = () => {
+    setIsSubscribed(false);
+    setConfirmUnsubOpen(false);
+    toast.success("Unsubscribed");
   };
 
   const handleSave = () => {
@@ -64,7 +82,7 @@ const ThreadHeader = ({ title, onToggleReferences, showReferences, onSave, onUns
 
           <div className="flex items-center gap-1.5 shrink-0">
             <button
-              onClick={handleSubscribe}
+              onClick={handleSubscribeClick}
               className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium border transition-colors ${
                 isSubscribed
                   ? "bg-primary text-primary-foreground border-primary hover:bg-primary/90"
@@ -170,6 +188,21 @@ const ThreadHeader = ({ title, onToggleReferences, showReferences, onSave, onUns
           </div>
         </div>
       </div>
+
+      <AlertDialog open={confirmUnsubOpen} onOpenChange={setConfirmUnsubOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Unsubscribe from this thread?</AlertDialogTitle>
+            <AlertDialogDescription>
+              You'll stop receiving updates for this thread. You can subscribe again at any time.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={confirmUnsubscribe}>Unsubscribe</AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </TooltipProvider>
   );
 };
