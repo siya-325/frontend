@@ -233,7 +233,7 @@ const Index = () => {
   };
 
   if (showAuth && !isSignedIn) {
-    return <AuthPage onSignIn={handleSignIn} />;
+    return <AuthPage onSignIn={handleSignIn} initialMode={authMode} />;
   }
 
   const mainMarginLeft = isDesktop
