@@ -188,6 +188,21 @@ const ThreadHeader = ({ title, onToggleReferences, showReferences, onSave, onUns
           </div>
         </div>
       </div>
+
+      <AlertDialog open={confirmUnsubOpen} onOpenChange={setConfirmUnsubOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Unsubscribe from this thread?</AlertDialogTitle>
+            <AlertDialogDescription>
+              You'll stop receiving updates for this thread. You can subscribe again at any time.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={confirmUnsubscribe}>Unsubscribe</AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </TooltipProvider>
   );
 };
