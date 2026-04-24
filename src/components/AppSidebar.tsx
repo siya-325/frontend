@@ -13,6 +13,7 @@ interface AppSidebarProps {
   onNavigate: (page: string) => void;
   onSignOut: () => void;
   onSignInClick: () => void;
+  onSignUpClick: () => void;
   onSearchChats: () => void;
 }
 
