@@ -74,6 +74,7 @@ const Index = () => {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [showAuth, setShowAuth] = useState(false);
+  const [authMode, setAuthMode] = useState<"signin" | "signup">("signin");
   const [searchChatsOpen, setSearchChatsOpen] = useState(false);
   const [savedPapers, setSavedPapers] = useState<SavedPaper[]>([]);
   const [savedThreads, setSavedThreads] = useState<SavedThread[]>([]);
@@ -232,7 +233,7 @@ const Index = () => {
   };
 
   if (showAuth && !isSignedIn) {
-    return <AuthPage onSignIn={handleSignIn} />;
+    return <AuthPage onSignIn={handleSignIn} initialMode={authMode} />;
   }
 
   const mainMarginLeft = isDesktop
@@ -372,7 +373,8 @@ const Index = () => {
         onSelectHistory={handleSelectHistory}
         onNavigate={setCurrentPage}
         onSignOut={handleSignOut}
-        onSignInClick={() => setShowAuth(true)}
+        onSignInClick={() => { setAuthMode("signin"); setShowAuth(true); }}
+        onSignUpClick={() => { setAuthMode("signup"); setShowAuth(true); }}
         onSearchChats={() => setSearchChatsOpen(true)}
       />
 

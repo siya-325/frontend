@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Plus, Search, Clock, LogIn, X, PanelLeft, PanelLeftClose, Library } from "lucide-react";
+import { Plus, Search, Clock, LogIn, UserPlus, X, PanelLeft, PanelLeftClose, Library } from "lucide-react";
 import { useIsDesktop } from "@/hooks/use-is-desktop";
 import ProfileMenu from "./ProfileMenu";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
@@ -13,6 +13,7 @@ interface AppSidebarProps {
   onNavigate: (page: string) => void;
   onSignOut: () => void;
   onSignInClick: () => void;
+  onSignUpClick: () => void;
   onSearchChats: () => void;
 }
 
@@ -58,7 +59,7 @@ const CollapsedLogoToggle = ({ onToggle, onNavigate }: { onToggle: () => void; o
 
 const AppSidebar = ({
   isOpen, onToggle, isSignedIn, onNewThread, onSelectHistory,
-  onNavigate, onSignOut, onSignInClick, onSearchChats,
+  onNavigate, onSignOut, onSignInClick, onSignUpClick, onSearchChats,
 }: AppSidebarProps) => {
   const isDesktop = useIsDesktop();
 
@@ -223,20 +224,49 @@ const AppSidebar = ({
                 </Tooltip>
               )
             ) : (
-              <Tooltip>
-                <TooltipTrigger asChild>
+              isOpen ? (
+                <div className="flex flex-col gap-1">
                   <button
                     onClick={onSignInClick}
                     className="flex items-center gap-2 w-full px-3 py-2 text-sm rounded-lg hover:bg-accent transition-colors text-secondary-foreground justify-center"
                   >
                     <LogIn className="w-4 h-4 shrink-0" />
-                    {isOpen && <span className="whitespace-nowrap">Sign in</span>}
+                    <span className="whitespace-nowrap">Sign in</span>
                   </button>
-                </TooltipTrigger>
-                {!isOpen && (
-                  <TooltipContent side="right" sideOffset={8}>Sign in</TooltipContent>
-                )}
-              </Tooltip>
+                  <button
+                    onClick={onSignUpClick}
+                    className="flex items-center gap-2 w-full px-3 py-2 text-sm rounded-lg bg-primary text-primary-foreground hover:opacity-90 transition-opacity justify-center"
+                  >
+                    <UserPlus className="w-4 h-4 shrink-0" />
+                    <span className="whitespace-nowrap">Sign up</span>
+                  </button>
+                </div>
+              ) : (
+                <div className="flex flex-col gap-1">
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <button
+                        onClick={onSignInClick}
+                        className="flex items-center justify-center w-full px-3 py-2 text-sm rounded-lg hover:bg-accent transition-colors text-secondary-foreground"
+                      >
+                        <LogIn className="w-4 h-4 shrink-0" />
+                      </button>
+                    </TooltipTrigger>
+                    <TooltipContent side="right" sideOffset={8}>Sign in</TooltipContent>
+                  </Tooltip>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <button
+                        onClick={onSignUpClick}
+                        className="flex items-center justify-center w-full px-3 py-2 text-sm rounded-lg bg-primary text-primary-foreground hover:opacity-90 transition-opacity"
+                      >
+                        <UserPlus className="w-4 h-4 shrink-0" />
+                      </button>
+                    </TooltipTrigger>
+                    <TooltipContent side="right" sideOffset={8}>Sign up</TooltipContent>
+                  </Tooltip>
+                </div>
+              )
             )}
           </div>
         </aside>
@@ -350,13 +380,22 @@ const AppSidebar = ({
               onNavigate={(page) => { onNavigate(page); onToggle(); }}
             />
           ) : (
-            <button
-              onClick={() => { onSignInClick(); onToggle(); }}
-              className="flex items-center gap-2 w-full px-3 py-2 text-sm rounded-lg hover:bg-accent transition-colors text-secondary-foreground"
-            >
-              <LogIn className="w-4 h-4" />
-              Sign in
-            </button>
+            <div className="flex flex-col gap-2">
+              <button
+                onClick={() => { onSignInClick(); onToggle(); }}
+                className="flex items-center justify-center gap-2 w-full px-3 py-2 text-sm rounded-lg hover:bg-accent transition-colors text-secondary-foreground"
+              >
+                <LogIn className="w-4 h-4" />
+                Sign in
+              </button>
+              <button
+                onClick={() => { onSignUpClick(); onToggle(); }}
+                className="flex items-center justify-center gap-2 w-full px-3 py-2 text-sm rounded-lg bg-primary text-primary-foreground hover:opacity-90 transition-opacity"
+              >
+                <UserPlus className="w-4 h-4" />
+                Sign up
+              </button>
+            </div>
           )}
         </div>
       </aside>
