@@ -59,7 +59,7 @@ const CollapsedLogoToggle = ({ onToggle, onNavigate }: { onToggle: () => void; o
 
 const AppSidebar = ({
   isOpen, onToggle, isSignedIn, onNewThread, onSelectHistory,
-  onNavigate, onSignOut, onSignInClick, onSearchChats,
+  onNavigate, onSignOut, onSignInClick, onSignUpClick, onSearchChats,
 }: AppSidebarProps) => {
   const isDesktop = useIsDesktop();
 
